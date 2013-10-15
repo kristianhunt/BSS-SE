@@ -37,6 +37,9 @@
 	</target>
 
 	<target name="build" description="Build the system">
+		<propertyfile file="version.properties"> 
+			<entry key="build.revision.number" value="1" type="int" operation="+"/> 
+		</propertyfile> 
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${build.classes.dir}"/>
 		<javac
