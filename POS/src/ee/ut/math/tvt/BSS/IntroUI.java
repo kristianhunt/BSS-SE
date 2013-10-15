@@ -66,7 +66,7 @@ public class IntroUI extends JFrame{
 			c.gridy = 5;
 			add(TMember3, c);
 
-			TMember4 = new JLabel("Denis Юadan");
+			TMember4 = new JLabel("Denis Žadan");
 			c.gridx = 0;
 			c.gridy = 6;
 			add(TMember4, c);
