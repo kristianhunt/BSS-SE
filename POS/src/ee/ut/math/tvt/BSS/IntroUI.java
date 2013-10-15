@@ -76,7 +76,7 @@ public class IntroUI extends JFrame{
 			c.gridy = 7;
 			add(Version, c);
 
-			Logo = new ImageIcon("random.png");
+			Logo = new ImageIcon("logo.png");
 			LogoLabel = new JLabel(Logo);
 			c.gridx = 1;
 			c.gridy = 0;
