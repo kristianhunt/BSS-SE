@@ -5,7 +5,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -32,58 +36,98 @@ public class IntroUI extends JFrame{
 	private JLabel LogoLabel;
 	private JLabel Version;
 	
+	private String appProp = "./application.properties";
+
+	protected String getPropertyFromFile(String file_name, String key) throws IOException{
+		String value = null;
+		
+		try {
+
+			// to load application's properties, we use this class
+			Properties mainProperties = new Properties();
+
+			FileInputStream file;
+
+			// load the file handle for main.properties
+			file = new FileInputStream(file_name);
+			
+			
+
+			// load all the properties from this file
+			mainProperties.load(new InputStreamReader(file, "UTF8"));
+
+			// we have loaded the properties, so close the file handle
+			file.close();
+
+			// retrieve the property we are intrested, the "key"
+			value = mainProperties.getProperty(key);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+		
+		return value;
+	}
+	protected String getAppVersion() throws IOException{
+		String key = "build.number";
+	    return getPropertyFromFile("./version.properties", key);
+	}	
 	
 	public IntroUI(){
-        super("IntroUI");
+		super("IntroUI");
 		log.info("starting IntroUI");
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("application.properties"));
 			setLayout(new GridBagLayout());
 			GridBagConstraints c = new GridBagConstraints();
-
-			TName = new JLabel(br.readLine());
-			c.gridx = 0;
-			c.gridy = 0;
 			c.weighty = 1.0;
 			c.weightx = 1.0;
+
+			// BufferedReader br = new BufferedReader(new
+			// FileReader("application.properties"));
+
+			TName = new JLabel("Team name: "
+					+ this.getPropertyFromFile(appProp, "Team name"));
+			c.gridx = 0;
+			c.gridy = 0;
 			add(TName, c);
 
-			TLeader = new JLabel(br.readLine());
+			TLeader = new JLabel("Team leader: "
+					+ this.getPropertyFromFile(appProp, "Team leader"));
 			c.gridx = 0;
 			c.gridy = 1;
 			add(TLeader, c);
 
-			TLEmail = new JLabel(br.readLine());
+			TLEmail = new JLabel("Team leader email: "
+					+ this.getPropertyFromFile(appProp, "Team leader email"));
 			c.gridx = 0;
 			c.gridy = 2;
 			add(TLEmail, c);
-			
-			TMember = new JLabel(br.readLine());
+
+			TMember = new JLabel("Members");
 			c.gridx = 0;
 			c.gridy = 3;
 			add(TMember, c);
 
-			TMember1 = new JLabel(br.readLine());
+			TMember1 = new JLabel(this.getPropertyFromFile(appProp, "member1"));
 			c.gridx = 0;
 			c.gridy = 4;
 			add(TMember1, c);
 
-			TMember2 = new JLabel(br.readLine());
+			TMember2 = new JLabel(this.getPropertyFromFile(appProp, "member2"));
 			c.gridx = 0;
 			c.gridy = 5;
 			add(TMember2, c);
 
-			TMember3 = new JLabel(br.readLine());
+			TMember3 = new JLabel(this.getPropertyFromFile(appProp, "member3"));
 			c.gridx = 0;
 			c.gridy = 6;
 			add(TMember3, c);
 
-			TMember4 = new JLabel(br.readLine());
+			TMember4 = new JLabel(this.getPropertyFromFile(appProp, "member4"));
 			c.gridx = 0;
 			c.gridy = 7;
 			add(TMember4, c);
 
-			Version = new JLabel("Software version: ");
+			Version = new JLabel("Software version: " + this.getAppVersion());
 			c.gridx = 0;
 			c.gridy = 8;
 			add(Version, c);
@@ -103,11 +147,11 @@ public class IntroUI extends JFrame{
 					(screen.height - height) / 2);
 			setVisible(true);
 			log.info("Intro window is opened");
-			br.close();
+
 		} catch (Exception e) {
 			log.error(e.getMessage());
-		} 
-		finally {
+		} finally {
+			// br.close();
 		}       
 	}
 	
