@@ -83,7 +83,7 @@
 		    <manifest>
 		        <attribute name="Main-Class" value="ee.ut.math.tvt.BSS.Intro" />
 		    	<attribute name="Class-Path" value="etc/ lib/log4j-1.2.17.jar" />
-		        <attribute name="Implementation-Title" value="Ttile"/>
+		        <attribute name="Implementation-Title" value="Title"/>
 		        <attribute name="Implementation-Version" value="${new.build.number}"/> 
 		        <attribute name="Implementation-Vendor" value="BSS"/>		    	
 		    </manifest>
