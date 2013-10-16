@@ -6,8 +6,8 @@
 	<property file="build.properties"/>
 	<property name="build.dir" value="${basedir}/build"/>
 	<property name="build.classes.dir" value="${build.dir}/classes"/>
-	<property name="src.dir" value="${basedir}/src"/>
-	<property name="dist.dir" value="${basedir}/dist"/>
+	<property name="src.dir" value="${basedir}/src"/>	
+	<property name="dist.dir" value="${build.dir}/jar"/>
 	<property name="conf.dir" value="${basedir}/etc"/>
 	<property name="doc.dir" value="${build.dir}/doc"/>
 	<property name="test.reports.dir" value="${build.dir}/reports/"/>
@@ -49,8 +49,7 @@
 
 	<!-- Clean up build system results -->
 	<target name="clean" description="Clean up build system results">
-		<delete dir="${build.dir}"/>
-		<delete dir="${dist.dir}"/>
+		<delete dir="${build.dir}"/>		
 	</target>
 
 	<!-- Definitions of runnable ant targets.
@@ -78,17 +77,39 @@
 	</target>
 	
 	<!-- Dist -->
-	<target name="dist" depends="increaseVersion" description="Build internal documentation">
+	<target name="dist" depends="increaseVersion, build" description="Generate the distribution">
+		<mkdir dir="${dist.dir}"/>
+		<jar destfile="${dist.dir}/BSS.jar" basedir="${build.classes.dir}">
+		    <manifest>
+		        <attribute name="Main-Class" value="ee.ut.math.tvt.BSS.Intro" />
+		    	<attribute name="Class-Path" value="etc/ lib/log4j-1.2.17.jar" />
+		        <attribute name="Implementation-Title" value="Ttile"/>
+		        <attribute name="Implementation-Version" value="${new.build.number}"/> 
+		        <attribute name="Implementation-Vendor" value="BSS"/>		    	
+		    </manifest>
+		</jar>
+		<copy todir="${dist.dir}/lib">
+		   <fileset dir="${basedir}/lib" />
+		</copy>
 		
+		<copy todir="${dist.dir}/etc">
+		   <fileset dir="${basedir}/etc" />
+		</copy>		
+				
+		<copy todir="${dist.dir}">
+			<fileset dir="${basedir}" >
+			    <include name="**/*.properties"/>
+			    <include name="**/*.png"/>				
+			</fileset>			
+		</copy>	   			
 	</target>
 
-	<!-- Build internal documentation -->
-	<target name="javadoc" description="Build internal documentation">
-		<mkdir dir="${doc.dir}"/>
-		<javadoc destdir="${doc.dir}" classpathref="compile.classpath">
-			<fileset dir="${src.dir}" includes="**/*.java"/>
-		</javadoc>
+	
+	<target name="jrun" description="Run java file">	
+		<java jar="${dist.dir}/BSS.jar" failonerror="true" fork="true" />		
 	</target>
 
+    	
+	
 </project>
 
