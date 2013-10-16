@@ -83,7 +83,7 @@
 		    <manifest>
 		        <attribute name="Main-Class" value="ee.ut.math.tvt.BSS.Intro" />
 		    	<attribute name="Class-Path" value="etc/ lib/log4j-1.2.17.jar" />
-		        <attribute name="Implementation-Title" value="Title"/>
+		        <attribute name="Implementation-Title" value="Intro title"/>
 		        <attribute name="Implementation-Version" value="${new.build.number}"/> 
 		        <attribute name="Implementation-Vendor" value="BSS"/>		    	
 		    </manifest>
@@ -98,12 +98,11 @@
 				
 		<copy todir="${dist.dir}">
 			<fileset dir="${basedir}" >
-			    <include name="**/*.properties"/>
-			    <include name="**/*.png"/>				
+			    <include name="*.properties"/>
+			    <include name="*.png"/>				
 			</fileset>			
 		</copy>	   			
 	</target>
-
 	
 	<target name="jrun" description="Run java file">	
 		<java jar="${dist.dir}/BSS.jar" failonerror="true" fork="true" />		
