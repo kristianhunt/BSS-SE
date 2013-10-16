@@ -13,7 +13,7 @@
 	<property name="test.reports.dir" value="${build.dir}/reports/"/>
 
 	<!-- Definitions of classpath variants used for different tasks -->
-
+	
 	<path id="compile.classpath">
 		<fileset dir="lib">
 			<include name="*.jar"/>
@@ -29,15 +29,8 @@
 		</fileset>
 	</path>
 
-	<!-- Definitions of runnable ant targets.
-         Run them from the command line by executing "ant [targetname]"  -->
-
-	<target name="run" depends="build" description="Run the template application">
-		<java classname="ee.ut.math.tvt.BSS.Intro" classpathref="test.classpath" fork="yes" />
-	</target>
-
-	<target name="build" description="Build the system">
-
+	<!-- Definitions of increaseVersion. -->	
+	<target name="increaseVersion" description="Run the template application">
 		<propertyfile file="version.properties"> 
 			<entry key="build.revision.number" value="1" type="int" operation="+"/> 
 		</propertyfile> 
@@ -51,8 +44,23 @@
 
         <propertyfile file="version.properties">
             <entry key="build.number" value="${new.build.number}"/>
-        </propertyfile>		
-		
+        </propertyfile>
+	</target>
+
+	<!-- Clean up build system results -->
+	<target name="clean" description="Clean up build system results">
+		<delete dir="${build.dir}"/>
+		<delete dir="${dist.dir}"/>
+	</target>
+
+	<!-- Definitions of runnable ant targets.
+         Run them from the command line by executing "ant [targetname]"  -->	
+	<target name="run" description="Run the template application">
+		<java classname="ee.ut.math.tvt.BSS.Intro" classpathref="test.classpath" fork="yes" />
+	</target>
+
+	<!-- Build 	 -->
+	<target name="build" description="Build the system">
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${build.classes.dir}"/>
 		<javac
@@ -67,7 +75,11 @@
 			includeantruntime="false">
 			<classpath refid="compile.classpath"/>
 		</javac>
-
+	</target>
+	
+	<!-- Dist -->
+	<target name="dist" depends="increaseVersion" description="Build internal documentation">
+		
 	</target>
 
 	<!-- Build internal documentation -->
@@ -76,11 +88,6 @@
 		<javadoc destdir="${doc.dir}" classpathref="compile.classpath">
 			<fileset dir="${src.dir}" includes="**/*.java"/>
 		</javadoc>
-	</target>
-
-	<!-- Clean up build system results -->
-	<target name="clean" description="Clean up build system results">
-		<delete dir="${build.dir}"/>
 	</target>
 
 </project>
