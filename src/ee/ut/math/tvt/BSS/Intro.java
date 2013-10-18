@@ -29,7 +29,7 @@ public static void main(String[] args) {
 		final SalesSystemUI ui = new SalesSystemUI(domainController);
 		ui.setVisible(true);
 
-		introUI.setAlwaysOnTop(false);
+		introUI.setAlwaysOnTop(false);		
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {

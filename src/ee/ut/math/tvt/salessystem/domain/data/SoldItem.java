@@ -16,10 +16,10 @@ public class SoldItem implements Cloneable, DisplayableItem {
     
     public SoldItem(StockItem stockItem, int quantity) {
         this.stockItem = stockItem;
+        this.id = stockItem.getId();//dzh 2013-10-18 set bar code
         this.name = stockItem.getName();
         this.price = stockItem.getPrice();
-        this.quantity = quantity;
-        
+        this.quantity = quantity;        
     }
     
     

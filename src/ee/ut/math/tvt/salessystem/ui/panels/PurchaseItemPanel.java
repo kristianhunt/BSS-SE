@@ -1,18 +1,16 @@
 package ee.ut.math.tvt.salessystem.ui.panels;
 
-import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
-import ee.ut.math.tvt.salessystem.domain.data.StockItem;
-import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.NoSuchElementException;
+import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,14 +18,24 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
+
+import ee.ut.math.tvt.BSS.comboBoxItem;
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
+import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
+
 /**
  * Purchase pane + shopping cart tabel UI.
  */
 public class PurchaseItemPanel extends JPanel {
-
+	private static final Logger log = Logger.getLogger(PurchaseItemPanel.class);
     private static final long serialVersionUID = 1L;
 
     // Text field on the dialogPane
+    private JComboBox<comboBoxItem> barCodeCB;
     private JTextField barCodeField;
     private JTextField quantityField;
     private JTextField nameField;
@@ -73,43 +81,70 @@ public class PurchaseItemPanel extends JPanel {
         return basketPane;
     }
 
+    // get product list from Stock Table
+	protected Vector<comboBoxItem> getProductListFromStock() {
+		Vector<comboBoxItem> modelComboBox = new Vector<comboBoxItem>();
+		StockTableModel stock = this.model.getWarehouseTableModel();
+		for (int i = 0; i < stock.getRowCount(); i++) {
+			modelComboBox.addElement(new comboBoxItem(stock.getTableRows()
+					.get(i).getId(), stock.getTableRows().get(i).getName()));
+		}
+		return modelComboBox;
+	}
+    
     // purchase dialog
     private JComponent drawDialogPane() {
 
         // Create the panel
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 2));
+        panel.setLayout(new GridLayout(6, 2));
         panel.setBorder(BorderFactory.createTitledBorder("Product"));
 
         // Initialize the textfields
         barCodeField = new JTextField();
         quantityField = new JTextField("1");
         nameField = new JTextField();
-        priceField = new JTextField();
+        priceField = new JTextField();        
+		barCodeCB = new JComboBox<comboBoxItem>(this.getProductListFromStock());
+		barCodeCB.setSelectedIndex(-1);// set unselected
 
         // Fill the dialog fields if the bar code text field loses focus
-        barCodeField.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {
-            }
-
-            public void focusLost(FocusEvent e) {
-                fillDialogFields();
-            }
-        });
-
+		/*
+		 * barCodeField.addFocusListener(new FocusListener() { public void
+		 * focusGained(FocusEvent e) { }
+		 * 
+		 * public void focusLost(FocusEvent e) { fillDialogFields(); } });
+		 */
+		 
+		 // Fill the dialog fields if selected the bar code from menu
+		barCodeCB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Object item = barCodeCB.getSelectedItem();
+				if (item instanceof comboBoxItem) {				
+					barCodeField.setText(((comboBoxItem) item).getId().toString());
+					fillDialogFields();
+				}
+			}
+		});
+		 
+        barCodeField.setEditable(false); //dzh 2013-10-18 set read only
         nameField.setEditable(false);
         priceField.setEditable(false);
-
+              
+        
         // == Add components to the panel
-
-        // - bar code
-        panel.add(new JLabel("Bar code:"));
-        panel.add(barCodeField);
+        //- barcode Combobox
+        panel.add(new JLabel("Product:"));
+        panel.add(barCodeCB);        
 
         // - amount
         panel.add(new JLabel("Amount:"));
         panel.add(quantityField);
-
+        
+        // - bar code
+        panel.add(new JLabel("Bar code:"));
+        panel.add(barCodeField);
+        
         // - name
         panel.add(new JLabel("Name:"));
         panel.add(nameField);
@@ -122,7 +157,13 @@ public class PurchaseItemPanel extends JPanel {
         addItemButton = new JButton("Add to cart");
         addItemButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                addItemEventHandler();
+                try {
+					addItemEventHandler();
+				} catch (VerificationFailedException e1) {
+					// TODO Auto-generated catch block
+					log.error(e1.getMessage());
+					//!e1.printStackTrace();
+				}
             }
         });
 
@@ -159,19 +200,35 @@ public class PurchaseItemPanel extends JPanel {
 
     /**
      * Add new item to the cart.
+     * @throws VerificationFailedException 
      */
-    public void addItemEventHandler() {
+    public void addItemEventHandler() throws VerificationFailedException {
         // add chosen item to the shopping cart.
         StockItem stockItem = getStockItemByBarcode();
         if (stockItem != null) {
             int quantity;
             try {
                 quantity = Integer.parseInt(quantityField.getText());
+                if (quantity == 0) {
+                	throw new VerificationFailedException("Not allowed to purchase the quantity of zero");                	
+                } 
             } catch (NumberFormatException ex) {
                 quantity = 1;
             }
-            model.getCurrentPurchaseTableModel()
-                .addItem(new SoldItem(stockItem, quantity));
+                                    
+            int quantityInBasket = model.getCurrentPurchaseTableModel().getQuantityInBasketByBarCode(stockItem.getId());
+            if (stockItem.getQuantity() >= (quantityInBasket + quantity)) { //dzh 2013-10-18 checked stock quantity for item 
+            	if (quantityInBasket != 0) {// update quantity if product in basket         		
+            		model.getCurrentPurchaseTableModel().updateItemQuantity(stockItem.getId(), quantity);
+            	}
+            	else {// add item to basket  
+            	model.getCurrentPurchaseTableModel().addItem(
+					new SoldItem(stockItem, quantity));
+            	}            	            	
+            }
+            else {
+                throw new VerificationFailedException(String.format("The maximum quantity allowed for purchase is %d", stockItem.getQuantity() - quantityInBasket));            	
+            }
         }
     }
 
@@ -181,7 +238,8 @@ public class PurchaseItemPanel extends JPanel {
     @Override
     public void setEnabled(boolean enabled) {
         this.addItemButton.setEnabled(enabled);
-        this.barCodeField.setEnabled(enabled);
+        //this.barCodeField.setEnabled(enabled); //dzh 2013-10-18 show bar code as read only
+        this.barCodeCB.setEnabled(enabled); //enable select product
         this.quantityField.setEnabled(enabled);
     }
 
