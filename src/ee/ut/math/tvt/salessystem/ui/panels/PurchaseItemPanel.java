@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -227,7 +228,10 @@ public class PurchaseItemPanel extends JPanel {
             	}            	            	
             }
             else {
-                throw new VerificationFailedException(String.format("The maximum quantity allowed for purchase is %d", stockItem.getQuantity() - quantityInBasket));            	
+				JOptionPane.showMessageDialog(null, String.format(
+						"The maximum quantity allowed for purchase is %d",
+						stockItem.getQuantity() - quantityInBasket), "Warning",
+						JOptionPane.WARNING_MESSAGE);
             }
         }
     }
