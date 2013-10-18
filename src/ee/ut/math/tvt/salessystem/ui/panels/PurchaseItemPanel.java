@@ -205,13 +205,20 @@ public class PurchaseItemPanel extends JPanel {
      */
     public void addItemEventHandler() throws VerificationFailedException {
         // add chosen item to the shopping cart.
+		if (barCodeCB.getSelectedIndex() == -1) {
+			JOptionPane.showMessageDialog(null, "Please select product!");
+			return;
+		}
         StockItem stockItem = getStockItemByBarcode();
         if (stockItem != null) {
             int quantity;
             try {
                 quantity = Integer.parseInt(quantityField.getText());
-                if (quantity == 0) {
-                	throw new VerificationFailedException("Not allowed to purchase the quantity of zero");                	
+                if (quantity == 0) {                	
+					JOptionPane.showMessageDialog(null,
+							"Not allowed a amount of zero", 
+							"Warning", JOptionPane.WARNING_MESSAGE);
+                return;	
                 } 
             } catch (NumberFormatException ex) {
                 quantity = 1;
