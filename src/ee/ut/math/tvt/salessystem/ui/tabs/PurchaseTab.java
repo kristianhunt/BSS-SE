@@ -6,6 +6,7 @@ import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
 
 
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -262,14 +263,16 @@ public static void createConfirmFrame(){
 				}
 				
 				public void warn(){
-					if(!cash1.getText().isEmpty()){
-						if(Double.parseDouble(cash1.getText())<0){
-							JOptionPane.showMessageDialog(null, "Please Insert a value larger than 0.","Error Message", JOptionPane.ERROR_MESSAGE);
-						}
-						
+					
+					try{
+					if(!cash1.getText().isEmpty()){				
 						double morechange = Double.parseDouble(cash1.getText()) - total1;
 						morechange = round(morechange,2);
 						change1.setText(morechange +"");
+					}
+					}
+					catch(NumberFormatException e){
+						
 					}
 					
 				}
