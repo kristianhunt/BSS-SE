@@ -1,12 +1,5 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
-import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
-import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
-import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
-
-
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -19,15 +12,21 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.MaskFormatter;
 
 import org.apache.log4j.Logger;
+
+import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
+import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
 
 /**
  * Encapsulates everything that has to do with the purchase tab (the tab
@@ -241,11 +240,22 @@ public static void createConfirmFrame(){
 			c.fill = GridBagConstraints.HORIZONTAL;
 			frame.add(change1,c);
 			
-			final JTextField cash1 = new JTextField();
+			//final JTextField cash1 = new JTextField();
+			//dzh 2013-10-23 use text field with mask
+			MaskFormatter formatter = null;
+	        try {
+	            formatter = new MaskFormatter("######.##");
+	        } catch (java.text.ParseException e) {
+	            e.printStackTrace(System.out);
+	        }
+			final JFormattedTextField cash1 = new JFormattedTextField(formatter);
+			
+			
 			c.gridx = 1;
 			c.gridy = 1;
 			c.fill = GridBagConstraints.HORIZONTAL;
 			cash1.setEditable(true);
+			
 			cash1.getDocument().addDocumentListener(new DocumentListener(){
 				
 				public void insertUpdate(DocumentEvent e) {
