@@ -12,17 +12,16 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.MaskFormatter;
 
 import org.apache.log4j.Logger;
 
+import ee.ut.math.tvt.BSS.JNumericField;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
@@ -241,15 +240,11 @@ public static void createConfirmFrame(){
 			frame.add(change1,c);
 			
 			//final JTextField cash1 = new JTextField();
-			//dzh 2013-10-23 use text field with mask
-			MaskFormatter formatter = null;
-	        try {
-	            formatter = new MaskFormatter("######.##");
-	        } catch (java.text.ParseException e) {
-	            e.printStackTrace(System.out);
-	        }
-			final JFormattedTextField cash1 = new JFormattedTextField(formatter);
-			
+			//dzh 2013-10-24 use text field with mask
+			final JNumericField cash1 = new JNumericField();
+			cash1.setMaxLength(6); //Set maximum length             
+			cash1.setPrecision(2); //Set precision (1 in your case)              
+			cash1.setAllowNegative(true); //Set false to disable negatives
 			
 			c.gridx = 1;
 			c.gridy = 1;
