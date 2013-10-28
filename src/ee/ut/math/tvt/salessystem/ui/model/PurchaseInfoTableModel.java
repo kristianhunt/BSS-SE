@@ -112,4 +112,12 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 		
         fireTableDataChanged();
     }
+    
+    public double getTotalAmount() { //dzh 2013-10-28 Total amount of purchase table
+    	double result = 0;	
+    	for (SoldItem item : this.getTableRows()) {
+    		result += item.getSum();
+    	}
+    	return result; 	
+    }
 }

@@ -12,11 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-
-
 import org.apache.log4j.Logger;
-
-
 
 import ee.ut.math.tvt.BSS.SubmitOrderTab;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
@@ -175,32 +171,30 @@ public class PurchaseTab {
 
 
   /** Event handler for the <code>submit purchase</code> event. */
-  protected void submitPurchaseButtonClicked() {
-    log.info("Sale complete");
-    try {
-    	
-      log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
-      
-      double totalPrice = 0;
-		for(int i = 0;i < model.getCurrentPurchaseTableModel().getRowCount();i++){
-			totalPrice = totalPrice + (double)model.getCurrentPurchaseTableModel().getValueAt(i, 4);
+	protected void submitPurchaseButtonClicked() {
+		log.info("Sale complete");
+		try {
+			log.debug("Contents of the current basket:\n"
+					+ model.getCurrentPurchaseTableModel());
+
+			double totalPrice = model.getCurrentPurchaseTableModel().getTotalAmount();
+			if (totalPrice < 0) {
+				JOptionPane.showMessageDialog(null,
+						"Total amount cannot be below zero!", "Warning",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			SubmitOrderTab submitordertab = new SubmitOrderTab(totalPrice);
+			submitordertab.setVisible(true);
+			if (submitordertab.ModalResult) {
+				domainController.submitCurrentPurchase(model.getCurrentPurchaseTableModel().getTableRows());
+				endSale();
+				model.getCurrentPurchaseTableModel().clear();
+			}
+		} catch (VerificationFailedException e1) {
+			log.error(e1.getMessage());
 		}
-		if(totalPrice < 0){
-			JOptionPane.showMessageDialog(null, "Total amount cannot be below zero!",
-					"Warning", JOptionPane.WARNING_MESSAGE);
-			return;
-		}
-      SubmitOrderTab submitordertab = new SubmitOrderTab(this.model, totalPrice);
-      
-      domainController.submitCurrentPurchase(
-          model.getCurrentPurchaseTableModel().getTableRows()
-      );
-      endSale();
-      model.getCurrentPurchaseTableModel().clear();
-    } catch (VerificationFailedException e1) {
-      log.error(e1.getMessage());
-    }
-  }
+	}
 
   /* === Helper methods that bring the whole purchase-tab to a certain state
    *     when called.

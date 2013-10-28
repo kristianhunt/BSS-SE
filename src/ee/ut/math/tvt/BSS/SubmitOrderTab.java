@@ -7,8 +7,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -16,23 +16,20 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.apache.log4j.Logger;
-import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.tabs.PurchaseTab;
 
 
-public class SubmitOrderTab extends JFrame{
+public class SubmitOrderTab extends JDialog {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private SalesSystemModel model;
+	//private SalesSystemModel model;
 	//private PurchaseItemPanel panel;
 	private static final Logger log = Logger.getLogger(SubmitOrderTab.class);
 	double totalPrice;
-
 	
-	  
+	public Boolean ModalResult = false; 
 	public JLabel totalLabel;
 	public JLabel totalField;
 	public JLabel cashLabel;
@@ -44,13 +41,16 @@ public class SubmitOrderTab extends JFrame{
 	private double totalAmount;
 	
 	
-	public SubmitOrderTab(SalesSystemModel model, double a) {
-		super("Confirmation");
-		this.model = model;
+	public SubmitOrderTab(/*SalesSystemModel model,*/ double a) {
+		this(null, "Confirmation");			
+		//this.model = model;
 		this.totalAmount = a;
 		draw();
 	}
 
+	public SubmitOrderTab(JFrame parent, String title) {
+		super(parent, title, true);		
+	}
 	
 	
 	  public static double round(double value, int places){
@@ -60,9 +60,7 @@ public class SubmitOrderTab extends JFrame{
 		  value = value*factor;
 		  long tmp = Math.round(value);
 		  return (double) tmp/factor;
-	  }
-	
-	  
+	  }		  
 	  
 	protected void draw(){
 						
@@ -197,31 +195,17 @@ public class SubmitOrderTab extends JFrame{
 		this.setLocation((screen.width - width) / 2,
 				(screen.height - height) / 2);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-
-		
-		
-		
-		this.setVisible(true);
-		
-	
 		
 	}
-	
+
 	private void CancelButtonClicked() {
 		this.dispose();
 	}
 
 	
 	private void SubmitButtonClicked() {
-		
-		
-		PurchaseTab.endSale();
-		model.getCurrentPurchaseTableModel().clear();
-		this.dispose();
-		
-		
-		
+		this.ModalResult = true;
+		this.dispose();	
 	}
 	
 
