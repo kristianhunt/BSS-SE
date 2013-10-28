@@ -2,20 +2,20 @@ package ee.ut.math.tvt.salessystem.ui.tabs;
 
 import java.awt.Color;
 import java.awt.Component;
-
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
+
 import org.apache.log4j.Logger;
+
 
 
 import ee.ut.math.tvt.BSS.SubmitOrderTab;
@@ -180,8 +180,18 @@ public class PurchaseTab {
     try {
     	
       log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
-      SubmitOrderTab submitordertab = new SubmitOrderTab(this.model);
-
+      
+      double totalPrice = 0;
+		for(int i = 0;i < model.getCurrentPurchaseTableModel().getRowCount();i++){
+			totalPrice = totalPrice + (double)model.getCurrentPurchaseTableModel().getValueAt(i, 4);
+		}
+		if(totalPrice < 0){
+			JOptionPane.showMessageDialog(null, "Total amount cannot be below zero!",
+					"Warning", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+      SubmitOrderTab submitordertab = new SubmitOrderTab(this.model, totalPrice);
+      
       domainController.submitCurrentPurchase(
           model.getCurrentPurchaseTableModel().getTableRows()
       );
