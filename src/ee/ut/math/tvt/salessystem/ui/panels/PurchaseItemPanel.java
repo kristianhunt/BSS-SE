@@ -6,7 +6,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.NoSuchElementException;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -27,7 +26,6 @@ import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
 
 /**
  * Purchase pane + shopping cart tabel UI.
@@ -82,17 +80,6 @@ public class PurchaseItemPanel extends JPanel {
 
         return basketPane;
     }
-
-    // get product list from Stock Table
-	protected Vector<comboBoxItem> getProductListFromStock() {
-		Vector<comboBoxItem> modelComboBox = new Vector<comboBoxItem>();
-		StockTableModel stock = this.model.getWarehouseTableModel();
-		for (int i = 0; i < stock.getRowCount(); i++) {
-			modelComboBox.addElement(new comboBoxItem(stock.getTableRows()
-					.get(i).getId(), stock.getTableRows().get(i).getName()));
-		}
-		return modelComboBox;
-	}
     
     // purchase dialog
     private JComponent drawDialogPane() {
@@ -112,7 +99,9 @@ public class PurchaseItemPanel extends JPanel {
         
         nameField = new JTextField();
         priceField = new JTextField();        
-		barCodeCB = new JComboBox<comboBoxItem>(this.getProductListFromStock());
+		//barCodeCB = new JComboBox<comboBoxItem>(this.getProductListFromStock());
+        barCodeCB = new JComboBox<comboBoxItem>(this.model.getWarehouseTableModel().getProductList());        
+		barCodeCB.setName("BarCodeComboBox");//dzh 2013-10-28 define name for finding component by name
 		barCodeCB.setSelectedIndex(-1);// set unselected
 
         // Fill the dialog fields if the bar code text field loses focus

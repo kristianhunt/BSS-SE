@@ -1,9 +1,11 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
 import java.util.NoSuchElementException;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
+import ee.ut.math.tvt.BSS.comboBoxItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 
 /**
@@ -71,5 +73,15 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 
 		return buffer.toString();
 	}
+	
+	public Vector<comboBoxItem> getProductList() {
+		Vector<comboBoxItem> modelComboBox = new Vector<comboBoxItem>();		
+		for (int i = 0; i < this.getRowCount(); i++) {
+			modelComboBox.addElement(new comboBoxItem(this.getTableRows()
+					.get(i).getId(), this.getTableRows().get(i).getName()));
+		}
+		return modelComboBox;
+	}
+
 
 }

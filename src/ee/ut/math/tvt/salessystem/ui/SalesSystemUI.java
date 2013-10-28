@@ -1,20 +1,30 @@
 package ee.ut.math.tvt.salessystem.ui;
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import org.apache.log4j.Logger;
+
 import com.jgoodies.looks.windows.WindowsLookAndFeel;
+
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.tabs.HistoryTab;
 import ee.ut.math.tvt.salessystem.ui.tabs.PurchaseTab;
 import ee.ut.math.tvt.salessystem.ui.tabs.StockTab;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import org.apache.log4j.Logger;
 
 /**
  * Graphical user interface of the sales system.
@@ -75,6 +85,22 @@ public class SalesSystemUI extends JFrame {
     });
   }
 
+  private Component getComponent(String componentName, Component component) {
+	    Component found = null;
+
+	    if (component.getName() != null && component.getName().equals(componentName)) {
+	        found = component;
+	    } else {
+	            for (Component child : ((Container) component).getComponents()) {
+	                    found = getComponent(componentName, child);
+
+	                    if (found != null)
+	                            break;
+	            }
+	        }
+	    return found;
+	}
+  
   private void drawWidgets() {
     JTabbedPane tabbedPane = new JTabbedPane();
 
@@ -82,6 +108,30 @@ public class SalesSystemUI extends JFrame {
     tabbedPane.add("Warehouse", stockTab.draw());
     tabbedPane.add("History", historyTab.draw());
 
+    tabbedPane.addChangeListener(new ChangeListener() {
+        public void stateChanged(ChangeEvent e) {
+        	
+        	if (e.getSource() instanceof JTabbedPane) {
+        		JTabbedPane tabPages = (JTabbedPane)e.getSource();        		
+                switch (tabPages.getSelectedIndex()) {
+                case 0:
+                	Component comp = getComponent("BarCodeComboBox", tabPages.getSelectedComponent());
+                	if ((comp != null) &&  (comp instanceof JComboBox)){
+                		JComboBox barCodeCB = (JComboBox) comp;                		
+                		barCodeCB.setModel(new DefaultComboBoxModel( model.getWarehouseTableModel().getProductList()));                		                  
+                	}
+                    break;                
+                default:
+                    break;
+
+                }                     		
+              log.debug("Tab: " + tabPages.getSelectedComponent().getName());
+              //System.out.println("Tab: change active");
+        	}
+        }
+    });
+
+    
     getContentPane().add(tabbedPane);
   }
 

@@ -70,6 +70,7 @@ public class PurchaseTab {
    */
   public Component draw() {
     JPanel panel = new JPanel();
+    panel.setName("POS-panel"); //dzh 2013-10-28 need for identify panel
 
     // Layout
     panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
