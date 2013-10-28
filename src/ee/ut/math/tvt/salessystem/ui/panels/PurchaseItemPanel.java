@@ -107,9 +107,7 @@ public class PurchaseItemPanel extends JPanel {
         
         //quantityField = new JTextField("1");
         //dzh 2013-10-28 use safe components
-        quantityField = new JNumericField("1");  
-        quantityField.setMaxLength(6); //Set maximum length             
-        quantityField.setPrecision(0); //Set precision (1 in your case)              
+        quantityField = new JNumericField("1", 6, JNumericField.NUMERIC);                                   
         quantityField.setAllowNegative(true); //Set false to disable negatives
         
         nameField = new JTextField();
