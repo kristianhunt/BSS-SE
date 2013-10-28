@@ -37,6 +37,11 @@ public class JNumericField extends JTextField {
         this(2, DECIMAL);
     }
 
+    public JNumericField(String value) {
+    	this(Math.max(2, value.length()), DECIMAL);    	
+    	this.setText(value);
+    }    
+    
     public JNumericField(int iMaxLen) {
         this(iMaxLen, NUMERIC);
     }

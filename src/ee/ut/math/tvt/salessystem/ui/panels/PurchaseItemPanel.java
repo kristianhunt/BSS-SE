@@ -1,7 +1,6 @@
 package ee.ut.math.tvt.salessystem.ui.panels;
 
 import java.awt.GridBagConstraints;
-
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -22,6 +21,7 @@ import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
+import ee.ut.math.tvt.BSS.JNumericField;
 import ee.ut.math.tvt.BSS.comboBoxItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
@@ -39,7 +39,7 @@ public class PurchaseItemPanel extends JPanel {
     // Text field on the dialogPane
     private JComboBox<comboBoxItem> barCodeCB;
     private JTextField barCodeField;
-    private JTextField quantityField;
+    private JNumericField quantityField;
     private JTextField nameField;
     private JTextField priceField;
 
@@ -104,7 +104,14 @@ public class PurchaseItemPanel extends JPanel {
 
         // Initialize the textfields
         barCodeField = new JTextField();
-        quantityField = new JTextField("1");
+        
+        //quantityField = new JTextField("1");
+        //dzh 2013-10-28 use safe components
+        quantityField = new JNumericField("1");  
+        quantityField.setMaxLength(6); //Set maximum length             
+        quantityField.setPrecision(0); //Set precision (1 in your case)              
+        quantityField.setAllowNegative(true); //Set false to disable negatives
+        
         nameField = new JTextField();
         priceField = new JTextField();        
 		barCodeCB = new JComboBox<comboBoxItem>(this.getProductListFromStock());
