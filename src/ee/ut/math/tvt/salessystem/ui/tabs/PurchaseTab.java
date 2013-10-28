@@ -234,7 +234,7 @@ public static void createConfirmFrame(){
 			
 			final JTextField changeField = new JTextField();
 			c.gridx = 1;
-			c.gridy = 2;
+			c.gridy = 2;					
 			changeField.setEditable(false);
 			c.fill = GridBagConstraints.HORIZONTAL;
 			frame.add(changeField,c);
@@ -268,13 +268,15 @@ public static void createConfirmFrame(){
 				}
 				
 				public void warn(){
-					
 					try{
-					if(!cashField.getText().isEmpty()){				
-						double totalChange = Double.parseDouble(cashField.getText()) - finalTotal;
-						totalChange = round(totalChange,2);
-						changeField.setText(totalChange +"");
-					}
+						if (!cashField.getText().isEmpty()){				
+							double totalChange = Double.parseDouble(cashField.getText()) - finalTotal;
+							totalChange = round(totalChange,2);
+							changeField.setText(totalChange +"");
+						}
+						else {
+							changeField.setText("");//dzh 2013-10-28 clear "return text" for example: after Ctrl+X 						
+						}
 					}
 					catch(NumberFormatException e){
 						
@@ -285,7 +287,7 @@ public static void createConfirmFrame(){
 			});
 			frame.add(cashField,c);
 			
-			JLabel change = new JLabel("Change: ");
+			JLabel change = new JLabel("Return: ");
 			c.gridx = 0;
 			c.gridy = 2;
 			c.fill = GridBagConstraints.HORIZONTAL;
