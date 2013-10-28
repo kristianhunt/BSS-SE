@@ -41,11 +41,13 @@ public class SubmitOrderTab extends JFrame{
 	public JNumericField cashField;
 	public JButton Submit;
 	public JButton Cancel;
+	private double totalAmount;
 	
 	
-	public SubmitOrderTab(SalesSystemModel model) {
+	public SubmitOrderTab(SalesSystemModel model, double a) {
 		super("Confirmation");
 		this.model = model;
+		this.totalAmount = a;
 		draw();
 	}
 
@@ -71,17 +73,14 @@ public class SubmitOrderTab extends JFrame{
 		this.setLayout(gbl);
 		GridBagConstraints c = new GridBagConstraints();
 		
-		totalPrice = 0;
-		for(int i = 0;i < model.getCurrentPurchaseTableModel().getRowCount();i++){
-			totalPrice = totalPrice + (double)model.getCurrentPurchaseTableModel().getValueAt(i, 4);
-		}
+
 		
 		totalLabel = new JLabel("Total: ");
 		c.gridx = 0;
 		c.gridy = 0;
 		this.add(totalLabel,c);
 		
-		totalField = new JLabel(totalPrice + "");
+		totalField = new JLabel(totalAmount + "");
 		c.gridx = 1;
 		c.gridy = 0;
 		this.add(totalField,c);
@@ -127,16 +126,26 @@ public class SubmitOrderTab extends JFrame{
 			
 			public void warn(){
 				try{
-					if (!cashField.getText().isEmpty()){				
+					if (!cashField.getText().isEmpty()){
 						double totalChange = Double.parseDouble(cashField.getText()) - totalPrice;
+						if(totalChange >= 0){
+							Submit.setEnabled(true);
+						}
+						else{
+							Submit.setEnabled(false);
+						}
 						totalChange = round(totalChange,2);
 						changeField.setText(totalChange +"");
 					}
 					else {
-						changeField.setText("");//dzh 2013-10-28 clear "return text" for example: after Ctrl+X 						
+						changeField.setText("");//dzh 2013-10-28 clear "return text" for example: after Ctrl+X 
+						Submit.setEnabled(false);
 					}
 				}
 				catch(NumberFormatException e){
+					
+				}
+				finally{
 					
 				}
 				
@@ -167,6 +176,7 @@ public class SubmitOrderTab extends JFrame{
 			}
 			
 		});
+		Submit.setEnabled(false);
 		this.add(Submit,c);
 		
 		final JButton Cancel  = new JButton("Cancel");
