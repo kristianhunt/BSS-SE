@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import com.jgoodies.looks.windows.WindowsLookAndFeel;
 
+import ee.ut.math.tvt.BSS.comboBoxItem;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.tabs.HistoryTab;
@@ -118,8 +119,14 @@ public class SalesSystemUI extends JFrame {
                 	Component comp = getComponent("BarCodeComboBox", tabPages.getSelectedComponent());
                 	if ((comp != null) &&  (comp instanceof JComboBox)){
                 		JComboBox barCodeCB = (JComboBox) comp;
-                		//int 
-                		barCodeCB.setModel(new DefaultComboBoxModel( model.getWarehouseTableModel().getProductList()));                		                  
+                		Long Id = ((comboBoxItem) barCodeCB.getSelectedItem()).getId();
+                		barCodeCB.setModel(new DefaultComboBoxModel( model.getWarehouseTableModel().getProductList()));
+                		for (int i= 0; i < barCodeCB.getItemCount(); i++){
+                			if (Id == ((comboBoxItem) barCodeCB.getItemAt(i)).getId()) {
+                				barCodeCB.setSelectedIndex(i);
+                				break;                				
+                			}
+                		}
                 	}
                     break;                
                 default:
