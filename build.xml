@@ -108,9 +108,6 @@
 		<java jar="${dist.dir}/BSS.jar" failonerror="true" fork="true" />		
 	</target>
 
-	<target name="jrun" description="Run java file">	
-		<java jar="${dist.dir}/BSS.jar" failonerror="true" fork="true" />		
-	</target>
 
     <macrodef name="git">
 		<attribute name="command" />
