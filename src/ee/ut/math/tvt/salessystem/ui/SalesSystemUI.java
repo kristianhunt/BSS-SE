@@ -116,17 +116,23 @@ public class SalesSystemUI extends JFrame {
         		JTabbedPane tabPages = (JTabbedPane)e.getSource();        		
                 switch (tabPages.getSelectedIndex()) {
                 case 0:
-                	Component comp = getComponent("BarCodeComboBox", tabPages.getSelectedComponent());
-                	if ((comp != null) &&  (comp instanceof JComboBox)){
-                		JComboBox barCodeCB = (JComboBox) comp;
-                		Long Id = ((comboBoxItem) barCodeCB.getSelectedItem()).getId();
-                		barCodeCB.setModel(new DefaultComboBoxModel( model.getWarehouseTableModel().getProductList()));
-                		for (int i= 0; i < barCodeCB.getItemCount(); i++){
-                			if (Id == ((comboBoxItem) barCodeCB.getItemAt(i)).getId()) {
-                				barCodeCB.setSelectedIndex(i);
-                				break;                				
-                			}
-                		}
+						Component comp = getComponent("BarCodeComboBox",
+								tabPages.getSelectedComponent());
+						if ((comp != null) && (comp instanceof JComboBox)) {
+							JComboBox barCodeCB = (JComboBox) comp;
+							Long Id = ((comboBoxItem) barCodeCB
+									.getSelectedItem()).getId();
+							barCodeCB
+									.setModel(new DefaultComboBoxModel(model
+											.getWarehouseTableModel()
+											.getProductList()));
+							for (int i = 0; i < barCodeCB.getItemCount(); i++) {
+								if (Id == ((comboBoxItem) barCodeCB
+										.getItemAt(i)).getId()) {
+									barCodeCB.setSelectedIndex(i);
+									break;
+								}
+							}
                 	}
                     break;                
                 default:
