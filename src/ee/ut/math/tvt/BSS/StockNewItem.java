@@ -1,5 +1,7 @@
 package ee.ut.math.tvt.BSS;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,6 +12,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -55,7 +58,7 @@ public class StockNewItem extends JFrame {
 		this.setLayout(gbl);
 		GridBagConstraints c = new GridBagConstraints();
 
-		idLabel = new JLabel("Id:");
+		idLabel = new JLabel("Bar code:");
 		c.gridx = 0;
 		c.gridy = 0;
 		idLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -81,7 +84,6 @@ public class StockNewItem extends JFrame {
 		c.gridy = 4;
 		this.add(descriptionLabel, c);
 
-		
 		Long newBarcode = new Long(0);
 		java.util.List<StockItem> getRows = model.getTableRows();
 
@@ -89,11 +91,11 @@ public class StockNewItem extends JFrame {
 			if (newBarcode < getRows.get(i).getId())
 				newBarcode = getRows.get(i).getId();
 		}
-		newBarcode++;		
-		
-		idField = new JNumericField(newBarcode.toString(), 10, JNumericField.NUMERIC);
-		idField.setMaxLength(6);
-		idField.setFormat(1);
+		newBarcode++;
+
+		idField = new JNumericField(newBarcode.toString(), 13,
+				JNumericField.NUMERIC);
+		idField.setAllowNegative(false);
 		c.gridx = 1;
 		c.gridy = 0;
 		idField.setEditable(true);
@@ -119,9 +121,8 @@ public class StockNewItem extends JFrame {
 
 		quantityField = new JNumericField(6, JNumericField.NUMERIC);
 		quantityField.setAllowNegative(false);
-		//quantityField.setMaxLength(6);
-		//quantityField.setFormat(1);		
-		
+		// quantityField.setMaxLength(6);
+		// quantityField.setFormat(1);
 		c.gridx = 1;
 		c.gridy = 3;
 		nameField.setEditable(true);
@@ -177,12 +178,67 @@ public class StockNewItem extends JFrame {
 		String itemDesc = null;
 		double itemPrice = 0;
 		int itemQuantity = 0;
+
+		// dzh 2013-10-28 set normal colors [black/white]
+		for (Component comp : this.getContentPane().getComponents()) {
+			if (comp instanceof JTextField) {
+				comp.setBackground(Color.WHITE);
+				comp.setForeground(Color.BLACK);
+			}
+		}
+
 		try {
-			if (this.idField.getText().isEmpty()
-					|| this.nameField.getText().isEmpty()
-					|| this.priceField.getText().isEmpty()
-					|| this.quantityField.getText().isEmpty()) {
+			if (this.idField.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null,
+						"Bar code can not be empty!", "Warning",
+						JOptionPane.WARNING_MESSAGE);
+				idField.requestFocus();
+				idField.setBackground(Color.RED);
+				idField.setForeground(Color.WHITE);
 				isComplete = false;
+				return;
+			}
+
+			if (this.nameField.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Name can not be empty!",
+						"Warning", JOptionPane.WARNING_MESSAGE);
+				nameField.requestFocus();
+				nameField.setBackground(Color.RED);
+				nameField.setForeground(Color.WHITE);
+				isComplete = false;
+				return;
+			}
+
+			if (this.priceField.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Price can not be empty!",
+						"Warning", JOptionPane.WARNING_MESSAGE);
+				priceField.requestFocus();
+				priceField.setBackground(Color.RED);
+				priceField.setForeground(Color.WHITE);
+				isComplete = false;
+				return;
+			}
+			if ((this.quantityField.getText().isEmpty())
+					|| (Integer.parseInt(this.quantityField.getText()) == 0)) {
+				JOptionPane.showMessageDialog(null,
+						"Quantity can not be empty!", "Warning",
+						JOptionPane.WARNING_MESSAGE);
+				quantityField.requestFocus();
+				quantityField.setBackground(Color.RED);
+				quantityField.setForeground(Color.WHITE);
+				isComplete = false;
+				return;
+			}
+
+			if (this.descriptionField.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null,
+						"Description can not be empty!", "Warning",
+						JOptionPane.WARNING_MESSAGE);
+				descriptionField.requestFocus();
+				descriptionField.setBackground(Color.RED);
+				descriptionField.setForeground(Color.WHITE);
+				isComplete = false;
+				return;
 			}
 
 			itemID = Long.parseLong(idField.getText());
@@ -199,14 +255,14 @@ public class StockNewItem extends JFrame {
 		catch (Exception E) {
 			isComplete = false;
 			log.error(E.getMessage());
-		}
-
-		if (isComplete) {
-			StockItem newStock = new StockItem(itemID, itemName, itemDesc,
-					itemPrice, itemQuantity);
-			System.out.println(newStock.toString());
-			model.addItem(newStock);
-			this.dispose();
+		} finally {
+			if (isComplete) {
+				StockItem newStock = new StockItem(itemID, itemName, itemDesc,
+						itemPrice, itemQuantity);
+				System.out.println(newStock.toString());
+				model.addItem(newStock);
+				this.dispose();
+			}
 		}
 	}
 
