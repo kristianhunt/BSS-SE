@@ -211,47 +211,47 @@ public static void createConfirmFrame(){
 			GridBagLayout gbl = new GridBagLayout();
 			GridBagConstraints c = new  GridBagConstraints();
 			frame.setLayout(gbl);
-			double total = 0;
+			double totalPrice = 0;
 			for(int i = 0;i < model.getCurrentPurchaseTableModel().getRowCount();i++){
-				total = total + (double)model.getCurrentPurchaseTableModel().getValueAt(i, 4);
+				totalPrice = totalPrice + (double)model.getCurrentPurchaseTableModel().getValueAt(i, 4);
 			}
-			final double total1 = total;
+			final double finalTotal = totalPrice;
 			
-			JLabel sum = new JLabel("Total: ");
+			JLabel total = new JLabel("Total: ");
 			c.gridx = 0;
 			c.gridy = 0;
-			frame.add(sum,c);
+			frame.add(total,c);
 			
-			JLabel sum1 = new JLabel(total + "");
+			JLabel totalField = new JLabel(totalPrice + "");
 			c.gridx = 1;
 			c.gridy = 0;
-			frame.add(sum1,c);
+			frame.add(totalField,c);
 			
 			JLabel cash = new JLabel("Cash: ");
 			c.gridx = 0;
 			c.gridy = 1;
 			frame.add(cash,c);
 			
-			final JTextField change1 = new JTextField();
+			final JTextField changeField = new JTextField();
 			c.gridx = 1;
 			c.gridy = 2;
-			change1.setEditable(false);
+			changeField.setEditable(false);
 			c.fill = GridBagConstraints.HORIZONTAL;
-			frame.add(change1,c);
+			frame.add(changeField,c);
 			
 			//final JTextField cash1 = new JTextField();
 			//dzh 2013-10-24 use text field with mask
-			final JNumericField cash1 = new JNumericField();
-			cash1.setMaxLength(6); //Set maximum length             
-			cash1.setPrecision(2); //Set precision (1 in your case)              
-			cash1.setAllowNegative(true); //Set false to disable negatives
+			final JNumericField cashField = new JNumericField();
+			cashField.setMaxLength(6); //Set maximum length             
+			cashField.setPrecision(2); //Set precision (1 in your case)              
+			cashField.setAllowNegative(true); //Set false to disable negatives
 			
 			c.gridx = 1;
 			c.gridy = 1;
 			c.fill = GridBagConstraints.HORIZONTAL;
-			cash1.setEditable(true);
+			cashField.setEditable(true);
 			
-			cash1.getDocument().addDocumentListener(new DocumentListener(){
+			cashField.getDocument().addDocumentListener(new DocumentListener(){
 				
 				public void insertUpdate(DocumentEvent e) {
 					warn();
@@ -270,10 +270,10 @@ public static void createConfirmFrame(){
 				public void warn(){
 					
 					try{
-					if(!cash1.getText().isEmpty()){				
-						double morechange = Double.parseDouble(cash1.getText()) - total1;
-						morechange = round(morechange,2);
-						change1.setText(morechange +"");
+					if(!cashField.getText().isEmpty()){				
+						double totalChange = Double.parseDouble(cashField.getText()) - finalTotal;
+						totalChange = round(totalChange,2);
+						changeField.setText(totalChange +"");
 					}
 					}
 					catch(NumberFormatException e){
@@ -283,7 +283,7 @@ public static void createConfirmFrame(){
 				}
 				
 			});
-			frame.add(cash1,c);
+			frame.add(cashField,c);
 			
 			JLabel change = new JLabel("Change: ");
 			c.gridx = 0;
@@ -309,14 +309,12 @@ public static void createConfirmFrame(){
 			JButton Cancel  = new JButton("Cancel");
 			c.gridx = 1;
 			c.gridy = 3;
-			c.anchor = GridBagConstraints.PAGE_END;
+			//c.anchor = GridBagConstraints.PAGE_END;
 			Cancel.addActionListener(new ActionListener(){
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					frame.dispose();
-					
-					
+					frame.dispose();	
 				}
 				
 			});
@@ -327,7 +325,7 @@ public static void createConfirmFrame(){
 			frame.setLocation((screen.width - width) / 2,
 					(screen.height - height) / 2);
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			c.anchor = GridBagConstraints.PAGE_START;
+		//	c.anchor = GridBagConstraints.PAGE_START;
 
 			
 			

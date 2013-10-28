@@ -1,8 +1,9 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.BSS.JNumericField;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
+
 
 import java.awt.Color;
 import java.awt.Component;
@@ -22,10 +23,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentListener;
+
 import javax.swing.table.JTableHeader;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
+
 
 public class StockTab {
 
@@ -128,7 +129,9 @@ private void submitAddItemButtonClicked (){
 		c.gridy = 4;
 		frame.add(description,c);
 		
-		final JTextField idField = new JTextField();
+		final JNumericField idField = new JNumericField();
+		idField.setMaxLength(6);
+		idField.setFormat(1);
 		c.gridx = 1;
 		c.gridy = 0;
 		idField.setEditable(true);
@@ -151,14 +154,19 @@ private void submitAddItemButtonClicked (){
 		c.fill = GridBagConstraints.HORIZONTAL;
 		frame.add(nameField,c);
 		
-		final JTextField priceField = new JTextField();
+		final JNumericField priceField = new JNumericField();
+		priceField.setMaxLength(6);          
+		priceField.setPrecision(2);            
+		priceField.setAllowNegative(false);
 		c.gridx = 1;
 		c.gridy = 2;
 		nameField.setEditable(true);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		frame.add(priceField,c);
 		
-		final JTextField quantityField = new JTextField();
+		final JNumericField quantityField = new JNumericField();
+		quantityField.setMaxLength(6);
+		quantityField.setFormat(1);
 		c.gridx = 1;
 		c.gridy = 3;
 		nameField.setEditable(true);
