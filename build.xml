@@ -148,9 +148,15 @@
 	<target name="git_tag" description="Makes a tag of current situation in git">
 		<input message="Tag name" addproperty="tag-name" />
 		<input message="Tag message" addproperty="tag-message" />
+		<input message="Username" addproperty="username" />
+		<input message="Password" addproperty="password" />
 		<echo message="Making a new tag with name ${tag-name} and message ${tag-message}" />
 	    <git command="tag -a ${tag-name} -m ${tag-message}" />
-	    <git command="push --tags" />
+	    <git command="push --tags">
+	    	<args>
+	    		<arg value="https://${username}:${password}@github.com/kristianhunt/BSS-SE.git" />
+	    	</args>
+	    </git>
 	</target>
 
 </project>
