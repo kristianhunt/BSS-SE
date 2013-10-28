@@ -108,7 +108,6 @@
 		<java jar="${dist.dir}/BSS.jar" failonerror="true" fork="true" />		
 	</target>
 
-
     <macrodef name="git">
 		<attribute name="command" />
 		<attribute name="options" default="" />
@@ -125,6 +124,8 @@
  
 	<target name="git_commit" description="Commits all changes to version git">
 		<input message="Commit message" addproperty="commit-message" />
+		<input message="Username" addproperty="username" />
+		<input message="Password" addproperty="password" />
 		
 		<echo message="Commiting all changes with message ${commit-message}" />
 		<git command="add">
@@ -137,7 +138,11 @@
 				<arg value="-am ${commit-message}" />
 			</args>
 		</git>
-		<git command="push" />
+		<git command="push">
+			<args>
+				<arg value="https://${username}:${password}@github.com/kristianhunt/BSS-SE.git" />
+			</args>
+		</git>
 	</target>	
 
 	<target name="git_tag" description="Makes a tag of current situation in git">
