@@ -2,26 +2,23 @@ package ee.ut.math.tvt.salessystem.ui.tabs;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.EventQueue;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Toolkit;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+
 
 import org.apache.log4j.Logger;
 
-import ee.ut.math.tvt.BSS.JNumericField;
+
+import ee.ut.math.tvt.BSS.SubmitOrderTab;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
@@ -45,16 +42,9 @@ public class PurchaseTab {
 
   private static PurchaseItemPanel purchasePane;
 
-  private static SalesSystemModel model;
+  private SalesSystemModel model;
   
-  public static double round(double value, int places){
-	  if(places<0)throw new IllegalArgumentException();
-	  
-	  long factor = (long)Math.pow(10, places);
-	  value = value*factor;
-	  long tmp = Math.round(value);
-	  return (double) tmp/factor;
-  }
+
 
   public PurchaseTab(SalesDomainController controller,
       SalesSystemModel model)
@@ -189,7 +179,8 @@ public class PurchaseTab {
     try {
     	
       log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
-      createConfirmFrame();
+      SubmitOrderTab submitordertab = new SubmitOrderTab(this.model);
+
       domainController.submitCurrentPurchase(
           model.getCurrentPurchaseTableModel().getTableRows()
       );
@@ -199,146 +190,6 @@ public class PurchaseTab {
       log.error(e1.getMessage());
     }
   }
-public static void createConfirmFrame(){
-	EventQueue.invokeLater(new Runnable(){
-
-		@Override
-		public void run() {
-			int width = 250;
-			int height = 250;
-			
-			final JFrame frame = new JFrame("Confirmation");
-			GridBagLayout gbl = new GridBagLayout();
-			GridBagConstraints c = new  GridBagConstraints();
-			frame.setLayout(gbl);
-			double totalPrice = 0;
-			for(int i = 0;i < model.getCurrentPurchaseTableModel().getRowCount();i++){
-				totalPrice = totalPrice + (double)model.getCurrentPurchaseTableModel().getValueAt(i, 4);
-			}
-			final double finalTotal = totalPrice;
-			
-			JLabel total = new JLabel("Total: ");
-			c.gridx = 0;
-			c.gridy = 0;
-			frame.add(total,c);
-			
-			JLabel totalField = new JLabel(totalPrice + "");
-			c.gridx = 1;
-			c.gridy = 0;
-			frame.add(totalField,c);
-			
-			JLabel cash = new JLabel("Cash: ");
-			c.gridx = 0;
-			c.gridy = 1;
-			frame.add(cash,c);
-			
-			final JTextField changeField = new JTextField();
-			c.gridx = 1;
-			c.gridy = 2;					
-			changeField.setEditable(false);
-			c.fill = GridBagConstraints.HORIZONTAL;
-			frame.add(changeField,c);
-			
-			//final JTextField cash1 = new JTextField();
-			//dzh 2013-10-24 use text field with mask
-			final JNumericField cashField = new JNumericField();
-			cashField.setMaxLength(6); //Set maximum length             
-			cashField.setPrecision(2); //Set precision (1 in your case)              
-			cashField.setAllowNegative(true); //Set false to disable negatives
-			
-			c.gridx = 1;
-			c.gridy = 1;
-			c.fill = GridBagConstraints.HORIZONTAL;
-			cashField.setEditable(true);
-			
-			cashField.getDocument().addDocumentListener(new DocumentListener(){
-				
-				public void insertUpdate(DocumentEvent e) {
-					warn();
-				}
-
-				@Override
-				public void removeUpdate(DocumentEvent e) {
-					warn();
-				}
-
-				@Override
-				public void changedUpdate(DocumentEvent e) {
-					warn();
-				}
-				
-				public void warn(){
-					try{
-						if (!cashField.getText().isEmpty()){				
-							double totalChange = Double.parseDouble(cashField.getText()) - finalTotal;
-							totalChange = round(totalChange,2);
-							changeField.setText(totalChange +"");
-						}
-						else {
-							changeField.setText("");//dzh 2013-10-28 clear "return text" for example: after Ctrl+X 						
-						}
-					}
-					catch(NumberFormatException e){
-						
-					}
-					
-				}
-				
-			});
-			frame.add(cashField,c);
-			
-			JLabel change = new JLabel("Return: ");
-			c.gridx = 0;
-			c.gridy = 2;
-			c.fill = GridBagConstraints.HORIZONTAL;
-			frame.add(change,c);
-			
-			JButton Submit = new JButton("Submit");
-			c.gridx = 0;
-			c.gridy = 3;
-			c.anchor = GridBagConstraints.PAGE_END;
-			Submit.addActionListener(new ActionListener(){
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					//return date of order, time of order and total price(total1)
-					
-				}
-				
-			});
-			frame.add(Submit,c);
-			
-			JButton Cancel  = new JButton("Cancel");
-			c.gridx = 1;
-			c.gridy = 3;
-			//c.anchor = GridBagConstraints.PAGE_END;
-			Cancel.addActionListener(new ActionListener(){
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					frame.dispose();	
-				}
-				
-			});
-			frame.add(Cancel,c);
-			
-			frame.setSize(width, height);
-			Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-			frame.setLocation((screen.width - width) / 2,
-					(screen.height - height) / 2);
-			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		//	c.anchor = GridBagConstraints.PAGE_START;
-
-			
-			
-			
-			frame.setVisible(true);
-			
-		}
-		
-	});
-}
-
 
   /* === Helper methods that bring the whole purchase-tab to a certain state
    *     when called.
@@ -355,7 +206,7 @@ public static void createConfirmFrame(){
   }
 
   // switch UI to the state that allows to initiate new purchase
-  private static void endSale() {
+  public static void endSale() {
     purchasePane.reset();
 
     cancelPurchase.setEnabled(false);
