@@ -74,7 +74,7 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 		return buffer.toString();
 	}
 	
-	public Vector<comboBoxItem> getProductList() {
+	public Vector<comboBoxItem> getProductList() {//dzh need for init product combobox
 		Vector<comboBoxItem> modelComboBox = new Vector<comboBoxItem>();		
 		for (int i = 0; i < this.getRowCount(); i++) {
 			modelComboBox.addElement(new comboBoxItem(this.getTableRows()

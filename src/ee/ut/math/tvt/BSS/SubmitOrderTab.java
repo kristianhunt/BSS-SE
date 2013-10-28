@@ -166,11 +166,7 @@ public class SubmitOrderTab extends JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				
 				SubmitButtonClicked();
-				
-				
 			}
 			
 		});
@@ -199,12 +195,14 @@ public class SubmitOrderTab extends JDialog {
 	}
 
 	private void CancelButtonClicked() {
+		log.info("Payment - cancel");
 		this.dispose();
 	}
 
 	
 	private void SubmitButtonClicked() {
 		this.ModalResult = true;
+		log.info("Money ok");
 		this.dispose();	
 	}
 	
