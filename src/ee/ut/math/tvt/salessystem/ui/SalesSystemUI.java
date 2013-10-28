@@ -118,7 +118,7 @@ public class SalesSystemUI extends JFrame {
                 	Component comp = getComponent("BarCodeComboBox", tabPages.getSelectedComponent());
                 	if ((comp != null) &&  (comp instanceof JComboBox)){
                 		JComboBox barCodeCB = (JComboBox) comp;
-                		//
+                		//int 
                 		barCodeCB.setModel(new DefaultComboBoxModel( model.getWarehouseTableModel().getProductList()));                		                  
                 	}
                     break;                
