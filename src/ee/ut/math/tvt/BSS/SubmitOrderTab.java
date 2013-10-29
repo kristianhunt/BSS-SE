@@ -198,7 +198,6 @@ public class SubmitOrderTab extends JDialog {
 		log.info("Payment - cancel");
 		this.dispose();
 	}
-
 	
 	private void SubmitButtonClicked() {
 		this.ModalResult = true;

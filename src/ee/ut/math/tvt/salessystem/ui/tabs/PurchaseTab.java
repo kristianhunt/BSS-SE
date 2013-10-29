@@ -6,6 +6,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -16,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.BSS.SubmitOrderTab;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.data.OrderHeader;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
@@ -188,6 +191,7 @@ public class PurchaseTab {
 			submitordertab.setVisible(true);
 			if (submitordertab.ModalResult) {
 				domainController.submitCurrentPurchase(model.getCurrentPurchaseTableModel().getTableRows());
+				saveSale();
 				endSale();
 				model.getCurrentPurchaseTableModel().clear();
 			}
@@ -195,6 +199,18 @@ public class PurchaseTab {
 			log.error(e1.getMessage());
 		}
 	}
+  protected Boolean saveSale() {
+	  Boolean result = false;
+	  Date dt = new Date();
+	  
+	  OrderHeader orderHeader = new OrderHeader();
+	  orderHeader.setId(Long.valueOf(1));
+	  orderHeader.setDate(new SimpleDateFormat("dd.MM.yyyy").format(dt));
+	  orderHeader.setTime(new SimpleDateFormat("HH:mm:ss").format(dt));
+	  orderHeader.setSum(this.model.getCurrentPurchaseTableModel().getTotalAmount());	  
+	  this.model.getHistoryTableModel().addItem(orderHeader);	  
+	  return result;
+  }
 
   /* === Helper methods that bring the whole purchase-tab to a certain state
    *     when called.
