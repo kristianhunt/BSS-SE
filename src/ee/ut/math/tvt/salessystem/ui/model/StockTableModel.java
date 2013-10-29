@@ -83,5 +83,17 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 		return modelComboBox;
 	}
 
+	public void addQuantity(Long id,  int quantity) {
+		try {
+			StockItem item = getItemById(id);
+			item.setQuantity(item.getQuantity() + quantity);
+			log.debug("Found existing item " + item.getName()
+					+ " increased quantity by " + quantity);
+		}
+		catch (NoSuchElementException e) {			
+			log.debug("Not found item with barcode: " + id.toString());
+		}
+		fireTableDataChanged();
+	}
 
 }

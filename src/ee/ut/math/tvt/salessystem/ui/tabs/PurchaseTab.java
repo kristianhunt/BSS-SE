@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import ee.ut.math.tvt.BSS.SubmitOrderTab;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.OrderHeader;
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
@@ -200,17 +201,31 @@ public class PurchaseTab {
 		}
 	}
   protected Boolean saveSale() {
-	  Boolean result = false;
-	  Date dt = new Date();
-	  
-	  OrderHeader orderHeader = new OrderHeader();
-	  orderHeader.setId(this.model.getHistoryTableModel().genId());
-	  orderHeader.setDate(new SimpleDateFormat("dd.MM.yyyy").format(dt));
-	  orderHeader.setTime(new SimpleDateFormat("HH:mm:ss").format(dt));
-	  orderHeader.setSum(this.model.getCurrentPurchaseTableModel().getTotalAmount());
-	  orderHeader.setOrderDetail(this.model.getCurrentPurchaseTableModel().getTableRows());
- 	  this.model.getHistoryTableModel().addItem(orderHeader);	  
-	  return result;
+		Boolean result = false;
+		try {
+
+			Date dt = new Date();
+			OrderHeader orderHeader = new OrderHeader();
+			orderHeader.setId(this.model.getHistoryTableModel().genId());
+			orderHeader.setDate(new SimpleDateFormat("dd.MM.yyyy").format(dt));
+			orderHeader.setTime(new SimpleDateFormat("HH:mm:ss").format(dt));
+			orderHeader.setSum(this.model.getCurrentPurchaseTableModel().getTotalAmount());
+			orderHeader.setOrderDetail(this.model.getCurrentPurchaseTableModel().getTableRows());
+			
+			this.model.getHistoryTableModel().addItem(orderHeader);
+			for (SoldItem item : this.model.getCurrentPurchaseTableModel().getTableRows()) {
+				if (item.getQuantity().intValue() > 0) {
+					log.info("Product name: " + item.getName() + "quantity: "
+							+ item.getQuantity().intValue());
+					this.model.getWarehouseTableModel().addQuantity(item.getId(), -1 * item.getQuantity());
+				}
+			}
+			result = true;
+		} 
+		catch (Exception E) {
+			log.error(E.getMessage());
+		}
+		return result;
   }
 
   /* === Helper methods that bring the whole purchase-tab to a certain state
