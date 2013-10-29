@@ -207,8 +207,9 @@ public class PurchaseTab {
 	  orderHeader.setId(this.model.getHistoryTableModel().genId());
 	  orderHeader.setDate(new SimpleDateFormat("dd.MM.yyyy").format(dt));
 	  orderHeader.setTime(new SimpleDateFormat("HH:mm:ss").format(dt));
-	  orderHeader.setSum(this.model.getCurrentPurchaseTableModel().getTotalAmount());	  
-	  this.model.getHistoryTableModel().addItem(orderHeader);	  
+	  orderHeader.setSum(this.model.getCurrentPurchaseTableModel().getTotalAmount());
+	  orderHeader.setOrderDetail(this.model.getCurrentPurchaseTableModel().getTableRows());
+ 	  this.model.getHistoryTableModel().addItem(orderHeader);	  
 	  return result;
   }
 
@@ -228,7 +229,7 @@ public class PurchaseTab {
 
   // switch UI to the state that allows to initiate new purchase
   public static void endSale() {
-    purchasePane.reset();
+    purchasePane.reset();    
 
     cancelPurchase.setEnabled(false);
     submitPurchase.setEnabled(false);

@@ -257,6 +257,7 @@ public class PurchaseItemPanel extends JPanel {
         quantityField.setText("1");
         nameField.setText("");
         priceField.setText("");
+        barCodeCB.setSelectedIndex(-1); //dzh 2013-10-29 set unselected after sell or cancel
     }
 
     /*

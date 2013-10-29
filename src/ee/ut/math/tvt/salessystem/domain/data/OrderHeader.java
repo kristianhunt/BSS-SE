@@ -1,5 +1,7 @@
 package ee.ut.math.tvt.salessystem.domain.data;
 
+import java.util.List;
+
 public class OrderHeader implements Cloneable, DisplayableItem {
 	
     private Long id;
@@ -9,12 +11,15 @@ public class OrderHeader implements Cloneable, DisplayableItem {
     private String time;    
     
     private double sum;
+    
+    private List <SoldItem> orderDetail;
 
-    public OrderHeader(Long id, String date, String time, double sum) {
+    public OrderHeader(Long id, String date, String time, double sum, List <SoldItem> orderDetail) {
         this.id = id;
         this.date = date;
         this.time = time;
         this.sum = sum;
+        this.orderDetail = orderDetail;
     }
     
     /**
@@ -23,6 +28,14 @@ public class OrderHeader implements Cloneable, DisplayableItem {
     public OrderHeader() {
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }    
+    
     public String getDate() {
         return date;
     }
@@ -47,13 +60,13 @@ public class OrderHeader implements Cloneable, DisplayableItem {
         this.sum = sum;
     }
 
-    public Long getId() {
-        return id;
+    public List <SoldItem> getOrderDetail() {
+        return orderDetail;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setOrderDetail(List <SoldItem> orderDetail) {
+        this.orderDetail = orderDetail;
+    }    
     
     public String toString() {
         return id + " " + date + " " + time + " " + sum;
@@ -76,7 +89,7 @@ public class OrderHeader implements Cloneable, DisplayableItem {
     
     public Object clone() {
     	OrderHeader item =
-            new OrderHeader(getId(), getDate(), getTime(), getSum());
+            new OrderHeader(getId(), getDate(), getTime(), getSum(), getOrderDetail());
         return item;
     }
 		
