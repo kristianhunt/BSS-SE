@@ -204,7 +204,7 @@ public class PurchaseTab {
 	  Date dt = new Date();
 	  
 	  OrderHeader orderHeader = new OrderHeader();
-	  orderHeader.setId(Long.valueOf(1));
+	  orderHeader.setId(this.model.getHistoryTableModel().genId());
 	  orderHeader.setDate(new SimpleDateFormat("dd.MM.yyyy").format(dt));
 	  orderHeader.setTime(new SimpleDateFormat("HH:mm:ss").format(dt));
 	  orderHeader.setSum(this.model.getCurrentPurchaseTableModel().getTotalAmount());	  

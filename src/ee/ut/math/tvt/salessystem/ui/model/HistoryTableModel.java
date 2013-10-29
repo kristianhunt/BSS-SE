@@ -60,6 +60,17 @@ public class HistoryTableModel extends SalesSystemTableModel<OrderHeader> {
 		return buffer.toString();
 	}	
 
+	public Long genId() {
+		Long result = Long.valueOf(0);
+		for (OrderHeader orderHeader : rows)
+		{
+			if (Long.compare(result, orderHeader.getId()) < 0) {
+				result = orderHeader.getId();
+			}
+		}
+		return ++result;
+	}
+	
 }	
 
 
