@@ -28,7 +28,7 @@ public class HistoryTab {
     
     public Component draw() {
         JPanel panel = new JPanel();
-        // TODO - Sales history tabel        
+        // TODO - Sales history table        
         panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         GridBagLayout gb = new GridBagLayout();

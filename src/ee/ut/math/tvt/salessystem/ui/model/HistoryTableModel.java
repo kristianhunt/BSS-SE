@@ -1,16 +1,14 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
-import java.util.NoSuchElementException;
-
 import org.apache.log4j.Logger;
 
-import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.data.OrderHeader;
 
 /**
  * History header table model.
  */
 
-public class HistoryTableModel extends SalesSystemTableModel<StockItem> {
+public class HistoryTableModel extends SalesSystemTableModel<OrderHeader> {
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger log = Logger.getLogger(StockTableModel.class);
@@ -20,36 +18,29 @@ public class HistoryTableModel extends SalesSystemTableModel<StockItem> {
 	}
 
 	@Override
-	protected Object getColumnValue(StockItem item, int columnIndex) {
+	protected Object getColumnValue(OrderHeader item, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
 			return item.getId();
 		case 1:
-			return item.getName();
+			return item.getDate();
 		case 2:
-			return item.getPrice();
+			return item.getTime();
 		case 3:
-			return item.getQuantity();
+			return item.getSum();
 		}
 		throw new IllegalArgumentException("Column index out of range");
 	}
 
 	
-	public void addItem(final StockItem stockItem) {
-		try {
-			StockItem item = getItemById(stockItem.getId());
-			item.setQuantity(item.getQuantity() + stockItem.getQuantity());
-			log.debug("Found existing item " + stockItem.getName()
-					+ " increased quantity by " + stockItem.getQuantity());
-		}
-		catch (NoSuchElementException e) {
-			rows.add(stockItem);
-			log.debug("Added " + stockItem.getName()
-					+ " quantity of " + stockItem.getQuantity());
-		}
+	public void addItem(final OrderHeader orderHeader) {
+		rows.add(orderHeader);
+		log.debug("Added " + orderHeader.getId()
+					+ " summa of " + orderHeader.getSum());
 		fireTableDataChanged();
 	}
 
+	
 	@Override
 	public String toString() {
 		final StringBuffer buffer = new StringBuffer();
@@ -58,11 +49,11 @@ public class HistoryTableModel extends SalesSystemTableModel<StockItem> {
 			buffer.append(headers[i] + "\t");
 		buffer.append("\n");
 
-		for (final StockItem stockItem : rows) {
-			buffer.append(stockItem.getId() + "\t");
-			buffer.append(stockItem.getName() + "\t");
-			buffer.append(stockItem.getPrice() + "\t");
-			buffer.append(stockItem.getQuantity() + "\t");
+		for (final OrderHeader orderHeader : rows) {
+			buffer.append(orderHeader.getId() + "\t");
+			buffer.append(orderHeader.getDate() + "\t");
+			buffer.append(orderHeader.getTime() + "\t");
+			buffer.append(orderHeader.getSum() + "\t");
 			buffer.append("\n");
 		}
 
