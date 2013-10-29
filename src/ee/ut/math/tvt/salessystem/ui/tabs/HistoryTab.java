@@ -7,6 +7,11 @@ import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
+
+import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 
 /**
  * Encapsulates everything that has to do with the purchase tab (the tab
@@ -15,8 +20,11 @@ import javax.swing.JPanel;
 public class HistoryTab {
     
     // TODO - implement!
+	private SalesSystemModel model;
 
-    public HistoryTab() {} 
+    public HistoryTab(SalesSystemModel model) {
+    	this.model = model;
+    } 
     
     public Component draw() {
         JPanel panel = new JPanel();
@@ -45,12 +53,12 @@ public class HistoryTab {
     private Component drawHistoryMainPane() {
       JPanel panel = new JPanel();
 
-      //JTable table = new JTable(model.getWarehouseTableModel());
+      JTable table = new JTable(model.getHistoryTableModel());
 
-      //JTableHeader header = table.getTableHeader();
-      //header.setReorderingAllowed(false);
+      JTableHeader header = table.getTableHeader();
+      header.setReorderingAllowed(false);
 
-      //JScrollPane scrollPane = new JScrollPane(table);
+      JScrollPane scrollPane = new JScrollPane(table);
 
       GridBagConstraints gc = new GridBagConstraints();
       GridBagLayout gb = new GridBagLayout();
@@ -59,7 +67,7 @@ public class HistoryTab {
       gc.weighty = 1.0;
 
       panel.setLayout(gb);
-      //panel.add(scrollPane, gc);
+      panel.add(scrollPane, gc);
 
       panel.setBorder(BorderFactory.createTitledBorder("Purchase history"));
       return panel;

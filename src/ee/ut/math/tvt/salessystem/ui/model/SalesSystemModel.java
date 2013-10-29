@@ -19,6 +19,8 @@ public class SalesSystemModel {
 
     private final SalesDomainController domainController;
 
+    private HistoryTableModel historyTableModel;//dzh 2013-10-29
+    
     /**
      * Construct application model.
      * @param domainController Sales domain controller.
@@ -31,6 +33,8 @@ public class SalesSystemModel {
 
         // populate stock model with data from the warehouse
         warehouseTableModel.populateWithData(domainController.loadWarehouseState());
+        
+        historyTableModel = new HistoryTableModel();//dzh 2013-10-28 model for panel history
 
     }
 
@@ -41,5 +45,10 @@ public class SalesSystemModel {
     public PurchaseInfoTableModel getCurrentPurchaseTableModel() {
         return currentPurchaseTableModel;
     }
+    
+    public HistoryTableModel getHistoryTableModel() {
+        return historyTableModel;
+    }
+    
     
 }
