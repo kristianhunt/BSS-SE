@@ -120,7 +120,7 @@ public class SubmitOrderTab extends JDialog {
 			@Override
 			public void changedUpdate(DocumentEvent e) {
 				warn();
-			}
+			} 
 			
 			public void warn(){
 				try{
