@@ -125,7 +125,7 @@ public class SubmitOrderTab extends JDialog {
 			public void warn(){
 				try{
 					if (!cashField.getText().isEmpty()){
-						double totalChange = Double.parseDouble(cashField.getText()) - totalPrice;
+						double totalChange = Double.parseDouble(cashField.getText()) - totalAmount;
 						if(totalChange >= 0){
 							Submit.setEnabled(true);
 						}

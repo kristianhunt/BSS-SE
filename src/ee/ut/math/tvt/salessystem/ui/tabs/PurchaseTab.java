@@ -180,6 +180,13 @@ public class PurchaseTab {
 		try {
 			log.debug("Contents of the current basket:\n"
 					+ model.getCurrentPurchaseTableModel());
+			
+			if(model.getCurrentPurchaseTableModel().getRowCount() < 1){
+				JOptionPane.showMessageDialog(null,
+						"Please add a item to submit a purchase!", "Warning",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
 
 			double totalPrice = model.getCurrentPurchaseTableModel().getTotalAmount();
 			if (totalPrice < 0) {
@@ -196,7 +203,8 @@ public class PurchaseTab {
 				endSale();
 				model.getCurrentPurchaseTableModel().clear();
 			}
-		} catch (VerificationFailedException e1) {
+		} 
+		catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
 		}
 	}
