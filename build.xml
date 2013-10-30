@@ -158,10 +158,12 @@
         	<arg value="-m" />
             <arg value="${tag-message}" />
         </exec>			
-		<exec executable="push">
-    		<arg value="--tags" />
-    		<arg value="https://${username}:${password}@github.com/kristianhunt/BSS-SE.git" />	
-		</exec>
+	    <git command="push">
+	    	<args>
+	    		<arg value="--tags" />
+	    		<arg value="https://${username}:${password}@github.com/kristianhunt/BSS-SE.git" />
+	    	</args>
+	    </git>
 	</target>
 
 </project>
