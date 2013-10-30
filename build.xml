@@ -122,7 +122,7 @@
 		</sequential>
 	</macrodef>
  
-	<target name="git_commit" description="Commits all changes to version git">
+	<target name="git_commit" description="Commits all changes to version git.">
 		<input message="Commit message" addproperty="commit-message" />
 		<input message="Username" addproperty="username" />
 		<input message="Password" addproperty="password" />
