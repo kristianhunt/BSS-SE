@@ -151,9 +151,15 @@
 		<input message="Username" addproperty="username" />
 		<input message="Password" addproperty="password" />
 		<echo message="Making a new tag with name ${tag-name} and message ${tag-message}" />
-	    <git command="tag -a ${tag-name} -m ${tag-message}" />
-	    <git command="push --tags">
+	    <git command="tag" >
 	    	<args>
+	    		<arg value="-a" />
+	    		<arg value='"${tag-name}" -m "${tag-message}"' />
+	    	</args>
+	    </git>	
+	    <git command="push">
+	    	<args>
+	    		<arg value="--tags" />
 	    		<arg value="https://${username}:${password}@github.com/kristianhunt/BSS-SE.git" />
 	    	</args>
 	    </git>
