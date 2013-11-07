@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/hsqldb.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate/hibernate-core-4.1.7.Final.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
