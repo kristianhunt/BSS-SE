@@ -17,9 +17,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
+import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 
 public class StockNewItem extends JFrame {
 
@@ -257,11 +259,27 @@ public class StockNewItem extends JFrame {
 			log.error(E.getMessage());
 		} finally {
 			if (isComplete) {
-				StockItem newStock = new StockItem(itemID, itemName, itemDesc,
-						itemPrice, itemQuantity);
-				System.out.println(newStock.toString());
-				model.addItem(newStock);
-				this.dispose();
+				Session session = HibernateUtil.currentSession();				
+				try {
+					session.beginTransaction();
+
+					StockItem newStock = new StockItem(itemID, itemName,
+							itemDesc, itemPrice, itemQuantity);
+					System.out.println(newStock.toString());
+					model.addItem(newStock);
+
+					session.save(newStock);
+					session.getTransaction().commit();
+
+					this.dispose();
+				}
+				catch (Exception E) {
+					session.getTransaction().rollback();
+				}
+				finally {
+					
+				}
+				
 			}
 		}
 	}

@@ -3,8 +3,6 @@ package ee.ut.math.tvt.salessystem.domain.controller.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
-
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.HibernateDataService;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
@@ -19,7 +17,7 @@ import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 public class SalesDomainControllerImpl implements SalesDomainController {
 	
 	HibernateDataService service = new HibernateDataService();
-	private Session session = HibernateUtil.currentSession();
+	
 	protected List<StockItem> dataset = new ArrayList<StockItem>();
 	
 	public void submitCurrentPurchase(List<SoldItem> goods) throws VerificationFailedException {
