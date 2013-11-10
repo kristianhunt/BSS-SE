@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ORDER_HEADER")
+@Table(name = "SALE")
 public class OrderHeader implements Cloneable, DisplayableItem {
 	
 	@Id

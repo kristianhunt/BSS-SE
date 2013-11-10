@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 import ee.ut.math.tvt.BSS.SubmitOrderTab;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
@@ -23,6 +24,7 @@ import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
+import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 
 /**
  * Encapsulates everything that has to do with the purchase tab (the tab
@@ -210,8 +212,9 @@ public class PurchaseTab {
 	}
   protected Boolean saveSale() {
 		Boolean result = false;
+		Session session = HibernateUtil.currentSession();
 		try {
-
+			session.beginTransaction();
 			Date dt = new Date();
 			OrderHeader orderHeader = new OrderHeader();
 			orderHeader.setId(this.model.getHistoryTableModel().genId());
@@ -221,6 +224,10 @@ public class PurchaseTab {
 			orderHeader.setOrderDetail(this.model.getCurrentPurchaseTableModel().getTableRows());
 			
 			this.model.getHistoryTableModel().addItem(orderHeader);
+
+			session.save(orderHeader);
+			session.getTransaction().commit();
+
 			for (SoldItem item : this.model.getCurrentPurchaseTableModel().getTableRows()) {
 				if (item.getQuantity().intValue() > 0) {
 					log.info("Product name: " + item.getName() + "quantity: "
@@ -232,6 +239,7 @@ public class PurchaseTab {
 		} 
 		catch (Exception E) {
 			log.error(E.getMessage());
+			session.getTransaction().rollback();
 		}
 		return result;
   }
