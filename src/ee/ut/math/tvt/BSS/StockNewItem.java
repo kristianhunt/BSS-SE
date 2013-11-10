@@ -273,7 +273,7 @@ public class StockNewItem extends JFrame {
 
 					this.dispose();
 				}
-				catch (Exception E) {
+				catch (Exception E) {					
 					session.getTransaction().rollback();
 				}
 				finally {
