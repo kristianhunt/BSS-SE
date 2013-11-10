@@ -236,10 +236,7 @@ public class PurchaseTab {
 				session.save(item);
 			}
 
-			session.getTransaction().commit();
-
 			this.model.getHistoryTableModel().addItem(orderHeader);
-
 
 			for (SoldItem item : this.model.getCurrentPurchaseTableModel().getTableRows()) {
 				if (item.getQuantity().intValue() > 0) {
@@ -248,6 +245,7 @@ public class PurchaseTab {
 					this.model.getWarehouseTableModel().addQuantity(item.getId(), -1 * item.getQuantity());
 				}
 			}
+			session.getTransaction().commit();
 			result = true;
 		} 
 		catch (Exception E) {
