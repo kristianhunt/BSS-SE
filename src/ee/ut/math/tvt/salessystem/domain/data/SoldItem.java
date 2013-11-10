@@ -102,11 +102,11 @@ public class SoldItem implements Cloneable, DisplayableItem {
         this.stockItem = stockItem;
     }
 
-	public OrderHeader getOrderHeader() {
+	public OrderHeader getSaleId() {
 		return this.orderHeader;
 	}
 
-	public void setOrderHeader(OrderHeader orderHeader) {
+	public void setSaleId(OrderHeader orderHeader) {
 		this.orderHeader = orderHeader;
 	}
     

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -69,12 +70,21 @@ public class HistoryTab {
     	        int row = tableOrderHeader.rowAtPoint(evt.getPoint());
     	        int col = tableOrderHeader.columnAtPoint(evt.getPoint());
     	        if (row >= 0 && col >= 0) {
-    	        	List <SoldItem> a = (List <SoldItem>) model.getHistoryTableModel().getValueAt(row, 4);
+
+    	        	int col_id = model.getHistoryTableModel().getColumnIdByName("Order id");
+					log.debug("Column id: " + col_id);
+    	        	long sale_id = ((Long) model.getHistoryTableModel().getValueAt(row, col_id)).longValue();
+					log.debug("Sale id: " + sale_id);
+
+					List<SoldItem> a = new ArrayList<SoldItem>();
+
+					a.addAll(model.getHistoryTableModel().getItemById(sale_id)
+							.getOrderDetail());
+    	        	
     	        	PurchaseInfoTableModel currentOrderTableModel = new PurchaseInfoTableModel();
     	        	currentOrderTableModel.populateWithData(a);    	            
     	        	tableOrderDetail.setModel(currentOrderTableModel);
-    	        	log.info("Items count: " + a.size());
-    	        	log.info(tableOrderHeader.getValueAt(row, 0).toString());
+					log.debug("Items count: " + a.size());
     	        }
     	    }
     	});

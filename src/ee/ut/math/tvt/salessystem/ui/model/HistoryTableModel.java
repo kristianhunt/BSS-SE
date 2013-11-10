@@ -27,7 +27,7 @@ public class HistoryTableModel extends SalesSystemTableModel<OrderHeader> {
 		case 1:
 			return new SimpleDateFormat("dd.MM.yyyy").format(item.getDate());
 		case 2:
-			return item.getTime();
+			return new SimpleDateFormat("HH:mm:ss").format(item.getTime());
 		case 3:
 			return item.getSum();		
 		case 4:

@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Time;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -25,7 +28,6 @@ import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
 import ee.ut.math.tvt.salessystem.util.HibernateUtil;
-
 /**
  * Encapsulates everything that has to do with the purchase tab (the tab
  * labelled "Point-of-sale" in the menu).
@@ -222,14 +224,20 @@ public class PurchaseTab {
 			orderHeader.setDate(dt);
 			orderHeader.setTime(t);
 			orderHeader.setSum(this.model.getCurrentPurchaseTableModel().getTotalAmount());
+						
+			
+			List <SoldItem>  myList = this.model.getCurrentPurchaseTableModel().getTableRows();
+			Set<SoldItem> myList2 = new HashSet<SoldItem>(myList);
+			orderHeader.setOrderDetail(myList2);
+
 			session.save(orderHeader);
+			for (SoldItem item : orderHeader.getOrderDetail()) {
+				item.setSaleId(orderHeader);
+				session.save(item);
+			}
+
 			session.getTransaction().commit();
-			
-			
-			/*
-			 * orderHeader.setOrderDetail( SoldItem item :
-			 * this.model.getCurrentPurchaseTableModel().getTableRows() );
-			 */
+
 			this.model.getHistoryTableModel().addItem(orderHeader);
 
 

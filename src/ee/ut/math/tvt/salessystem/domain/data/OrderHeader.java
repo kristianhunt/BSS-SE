@@ -38,6 +38,10 @@ public class OrderHeader implements Cloneable, DisplayableItem {
 		return solditems;
 	}
 
+	public void setOrderDetail(Set<SoldItem> solditems) {
+		this.solditems = solditems;
+	}
+
 	public OrderHeader(Long id, Date date, Time time, double sum,
 			Set<SoldItem> solditems) {
         this.id = id;
@@ -85,9 +89,6 @@ public class OrderHeader implements Cloneable, DisplayableItem {
         this.sum = sum;
     }
 
-	public void setOrderDetail(Set<SoldItem> solditems) {
-		this.solditems = solditems;
-    }    
     
     public String toString() {
 		return id + " " + new SimpleDateFormat("dd.MM.yyyy").format(date) + " "

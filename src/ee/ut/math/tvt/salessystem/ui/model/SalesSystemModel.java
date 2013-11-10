@@ -35,6 +35,7 @@ public class SalesSystemModel {
         warehouseTableModel.populateWithData(domainController.loadWarehouseState());
         
         historyTableModel = new HistoryTableModel();//dzh 2013-10-28 model for panel history
+		historyTableModel.populateWithData(domainController.loadOrdersState()); //dzh 2013-11-11 read orders from base 
 
     }
 

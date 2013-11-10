@@ -73,5 +73,14 @@ public abstract class SalesSystemTableModel<T extends DisplayableItem> extends
         rows.addAll(data);
     }
     
+	public int getColumnIdByName(String name) {
+		int result = -1;
+		for (int i = 0; i < getColumnCount(); i++) {
+			if (headers[i].equals(name)) {
+				return i;
+			}
+		}
+		return result;
+	}
     
 }

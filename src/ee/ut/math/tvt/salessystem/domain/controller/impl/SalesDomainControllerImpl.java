@@ -5,6 +5,7 @@ import java.util.List;
 
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.HibernateDataService;
+import ee.ut.math.tvt.salessystem.domain.data.OrderHeader;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
@@ -18,7 +19,8 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 	
 	HibernateDataService service = new HibernateDataService();
 	
-	protected List<StockItem> dataset = new ArrayList<StockItem>();
+	protected List<StockItem> stock_dataset = new ArrayList<StockItem>();
+	protected List<OrderHeader> order_dataset = new ArrayList<OrderHeader>();
 	
 	public void submitCurrentPurchase(List<SoldItem> goods) throws VerificationFailedException {
 		// Let's assume we have checked and found out that the buyer is underaged and
@@ -44,11 +46,11 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 
 	public List<StockItem> loadWarehouseState() {
 		// XXX stock implementation
-		if (!dataset.isEmpty()) {
-			return this.dataset;			
+		if (!stock_dataset.isEmpty()) {
+			return this.stock_dataset;
 		}
 		
-		dataset.addAll(service.getStockItems()); //read from database
+		stock_dataset.addAll(service.getStockItems()); // read from database
 		
 		/* dzh 2013-11-10 do not need more
 		StockItem chips = new StockItem(1l, "Lays chips", "Potato chips", 11.0, 5);
@@ -62,9 +64,18 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 		dataset.add(beer);
 		
 		*/
-		return dataset;
+		return stock_dataset;
 	}
 	
+	public List<OrderHeader> loadOrdersState() {
+		if (!order_dataset.isEmpty()) {
+			return this.order_dataset;
+		}
+
+		order_dataset.addAll(service.getOrders()); // read from database
+		return order_dataset;
+	}
+
 	public void endSession() {
 	    HibernateUtil.closeSession();
 	}	
