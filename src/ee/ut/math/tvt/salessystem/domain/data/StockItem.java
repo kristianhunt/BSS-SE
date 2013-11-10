@@ -1,8 +1,14 @@
 package ee.ut.math.tvt.salessystem.domain.data;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * Stock item. Corresponds to the Data Transfer Object design pattern.
  */
+
+@Entity
+@Table(name = "STOCKITEM")
 public class StockItem implements Cloneable, DisplayableItem {
 	
     private Long id;
