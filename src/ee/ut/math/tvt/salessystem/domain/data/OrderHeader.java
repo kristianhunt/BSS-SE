@@ -1,12 +1,17 @@
 package ee.ut.math.tvt.salessystem.domain.data;
 
-import java.util.List;
+
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -18,22 +23,28 @@ public class OrderHeader implements Cloneable, DisplayableItem {
     private Long id;
 
 	@Column(name = "DATE")
-    private String date;
+	private Date date;
 
 	@Column(name = "TIME")
-    private String time;    
+	private Time time;
     
 	@Column(name = "SUMMA")
     private double sum;
     
-    private List <SoldItem> orderDetail;
+	@OneToMany(mappedBy = "orderHeader")
+	private Set<SoldItem> solditems;
 
-    public OrderHeader(Long id, String date, String time, double sum, List <SoldItem> orderDetail) {
+	public Set<SoldItem> getOrderDetail() {
+		return solditems;
+	}
+
+	public OrderHeader(Long id, Date date, Time time, double sum,
+			Set<SoldItem> solditems) {
         this.id = id;
         this.date = date;
         this.time = time;
         this.sum = sum;
-        this.orderDetail = orderDetail;
+		this.solditems = solditems;
     }
     
     /**
@@ -50,19 +61,19 @@ public class OrderHeader implements Cloneable, DisplayableItem {
         this.id = id;
     }    
     
-    public String getDate() {
+	public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+	public void setDate(Date date) {
         this.date = date;
     }
 
-    public String getTime() {
+	public Time getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+	public void setTime(Time time) {
         this.time = time;
     }
 
@@ -74,16 +85,13 @@ public class OrderHeader implements Cloneable, DisplayableItem {
         this.sum = sum;
     }
 
-    public List <SoldItem> getOrderDetail() {
-        return orderDetail;
-    }
-
-    public void setOrderDetail(List <SoldItem> orderDetail) {
-        this.orderDetail = orderDetail;
+	public void setOrderDetail(Set<SoldItem> solditems) {
+		this.solditems = solditems;
     }    
     
     public String toString() {
-        return id + " " + date + " " + time + " " + sum;
+		return id + " " + new SimpleDateFormat("dd.MM.yyyy").format(date) + " "
+				+ time + " " + sum;
     }
 
     /**
@@ -94,7 +102,8 @@ public class OrderHeader implements Cloneable, DisplayableItem {
     public Object getColumn(int columnIndex) {
         switch(columnIndex) {
             case 0: return id;
-            case 1: return date;
+		case 1:
+			return new SimpleDateFormat("dd.MM.yyyy").format(date);
             case 2: return time;
             case 3: return new Double(sum);
             default: throw new RuntimeException("invalid column!");

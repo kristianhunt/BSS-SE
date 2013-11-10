@@ -6,7 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
+import java.sql.Time;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -216,17 +216,22 @@ public class PurchaseTab {
 		try {
 			session.beginTransaction();
 			Date dt = new Date();
+			Time t = new Time(dt.getTime());
 			OrderHeader orderHeader = new OrderHeader();
 			orderHeader.setId(this.model.getHistoryTableModel().genId());
-			orderHeader.setDate(new SimpleDateFormat("dd.MM.yyyy").format(dt));
-			orderHeader.setTime(new SimpleDateFormat("HH:mm:ss").format(dt));
+			orderHeader.setDate(dt);
+			orderHeader.setTime(t);
 			orderHeader.setSum(this.model.getCurrentPurchaseTableModel().getTotalAmount());
-			orderHeader.setOrderDetail(this.model.getCurrentPurchaseTableModel().getTableRows());
-			
-			this.model.getHistoryTableModel().addItem(orderHeader);
-
 			session.save(orderHeader);
 			session.getTransaction().commit();
+			
+			
+			/*
+			 * orderHeader.setOrderDetail( SoldItem item :
+			 * this.model.getCurrentPurchaseTableModel().getTableRows() );
+			 */
+			this.model.getHistoryTableModel().addItem(orderHeader);
+
 
 			for (SoldItem item : this.model.getCurrentPurchaseTableModel().getTableRows()) {
 				if (item.getQuantity().intValue() > 0) {

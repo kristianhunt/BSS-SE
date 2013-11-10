@@ -1,5 +1,7 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
+import java.text.SimpleDateFormat;
+
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.data.OrderHeader;
@@ -23,7 +25,7 @@ public class HistoryTableModel extends SalesSystemTableModel<OrderHeader> {
 		case 0:
 			return item.getId();
 		case 1:
-			return item.getDate();
+			return new SimpleDateFormat("dd.MM.yyyy").format(item.getDate());
 		case 2:
 			return item.getTime();
 		case 3:
