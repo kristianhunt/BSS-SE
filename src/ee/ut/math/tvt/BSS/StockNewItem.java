@@ -210,6 +210,17 @@ public class StockNewItem extends JFrame {
 				isComplete = false;
 				return;
 			}
+			log.info(nameField.getText().length());
+			if (this.nameField.getText().length() > 50) {
+				
+				JOptionPane.showMessageDialog(null, "Maximum length of the name field is 50 characters!",
+						"Warning", JOptionPane.WARNING_MESSAGE);
+				nameField.requestFocus();
+				nameField.setBackground(Color.RED);
+				nameField.setForeground(Color.WHITE);
+				isComplete = false;
+				return;
+			}
 
 			if (this.priceField.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Price can not be empty!",
@@ -235,6 +246,16 @@ public class StockNewItem extends JFrame {
 			if (this.descriptionField.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(null,
 						"Description can not be empty!", "Warning",
+						JOptionPane.WARNING_MESSAGE);
+				descriptionField.requestFocus();
+				descriptionField.setBackground(Color.RED);
+				descriptionField.setForeground(Color.WHITE);
+				isComplete = false;
+				return;
+			}
+			if (this.descriptionField.getText().length() > 128) {
+				JOptionPane.showMessageDialog(null,
+						"Maximum length of the description field is 128 characters!", "Warning",
 						JOptionPane.WARNING_MESSAGE);
 				descriptionField.requestFocus();
 				descriptionField.setBackground(Color.RED);
