@@ -31,10 +31,10 @@ public class StockItemTest {
 	    assertEquals(id, 10, 0.0001);
 	    String name = (String) item1.getColumn(1);
 	    assertEquals(name, "testItem");
-	    double price = (double) item1.getColumn(2);
-	    assertEquals(price, 12.0, 0.001);
-	    int quantity = (int) item1.getColumn(3);
-	    assertEquals(quantity, 5);
+		double price = ((Double) item1.getColumn(2)).doubleValue();
+		assertEquals(price, 12.0, 0.0001);
+		int quantity = ((Integer) item1.getColumn(3)).intValue();
+	    assertEquals(quantity, 5, 0.0001);
 	}
 	@Test (expected = RuntimeException.class) 
 	public void testGetColumnException() {
