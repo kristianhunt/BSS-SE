@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry excluding="src/|conf/|data/|lib/hibernate/|lib/" kind="src" path=""/>
+	<classpathentry excluding="src/|conf/|data/|lib/hibernate/|lib/|build/classes/ee/ut/math/tvt/salessystem/domain/controller/impl/|build/classes/ee/ut/math/tvt/salessystem/domain/controller/|build/classes/ee/ut/math/tvt/salessystem/domain/|build/classes/ee/ut/math/tvt/salessystem/|build/classes/ee/ut/math/tvt/|build/classes/ee/ut/math/|build/classes/ee/ut/|build/classes/ee/|build/classes/|build/" kind="src" path=""/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/hsqldb.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.11.jar"/>
