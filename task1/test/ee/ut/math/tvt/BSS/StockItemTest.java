@@ -1,6 +1,6 @@
 package ee.ut.math.tvt.BSS;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class StockItemTest {
 	
 	@Test
 	public void testGetColumn() {
-		long id = (long) item1.getColumn(0);
+		long id = ((Long) item1.getColumn(0)).longValue();
 	    assertEquals(id, 10, 0.0001);
 	    String name = (String) item1.getColumn(1);
 	    assertEquals(name, "testItem");

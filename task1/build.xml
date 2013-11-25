@@ -25,6 +25,12 @@
 	<property name="lib.hibernate.dir"   value="${lib.dir}/hibernate"/>
 	
 	<!-- Definitions of classpath variants used for different tasks -->
+	<path id="libs">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>	
+	
 	
 	<path id="compile.classpath">
 		<fileset dir="lib">
@@ -63,6 +69,19 @@
 		</fileset>
 	</path>
 	
+	<path id="test-classpath">
+		
+	    <!-- configuration -->
+		<pathelement location="${conf.dir}"/>
+		
+		<fileset dir="${lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	    <pathelement path="${build.classes.dir}/" />
+		<pathelement path="${build.test.dir}/" />
+	</path>
+
+	
 	<!-- Definitions of increaseVersion. -->	
 	<target name="increaseVersion" description="Run the template application">
 		<propertyfile file="version.properties"> 
@@ -93,11 +112,15 @@
 			<!-- <arg value="console"/>-->
 		</java>
 	</target>
-
-	<!-- Build 	 -->
-	<target name="build" description="Build the system">
+	
+	<target name="init" description="Initialize">
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${build.classes.dir}"/>
+		<mkdir dir="${build.test.dir}"/>
+	</target>
+
+	<!-- Build 	 -->
+	<target name="build" depends="init" description="Build the system">
 		<javac
             srcdir="${src.dir}"
             destdir="${build.classes.dir}"
@@ -224,7 +247,7 @@
 	
 	<target name="build-tests" depends="build" description="Build the system">
 		<javac
-            srcdir="${test.dir}"
+            srcdir="${test.dir}" 
             destdir="${build.test.dir}"
             debug="true"
             debuglevel="lines,vars,source"
@@ -237,6 +260,7 @@
 			<classpath>
 				<pathelement path="${build.classes.dir}" />
 			</classpath>
+			
 		</javac>
 	</target>
 	
