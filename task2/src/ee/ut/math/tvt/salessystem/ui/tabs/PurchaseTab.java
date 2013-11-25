@@ -203,9 +203,8 @@ public class PurchaseTab {
         purchasePane.reset();
 
         showSelectClientDialog();
-		// dzh 2013-11-25 from condition: Sale sale = new Sale(client);
-		Sale sale = new Sale(this.model.getSelectedClient());
-		this.model.getCurrentPurchaseTableModel().setSale(sale);
+		// dzh 2013-11-25 from condition: Sale sale = new Sale(client);		
+		this.model.getCurrentPurchaseTableModel().setSale(new Sale(this.model.getSelectedClient()));
 
         purchasePane.setEnabled(true);
         submitPurchase.setEnabled(true);

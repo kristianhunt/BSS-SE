@@ -65,10 +65,10 @@ public class Sale implements DisplayableItem {
     }
 
     public Set<SoldItem> getSoldItems() {
-		if (soldItems == null) { // dzh 2013-11-25 just in case
-			soldItems = new HashSet<SoldItem>();
+		if (this.soldItems == null) { // dzh 2013-11-25 just in case
+			this.soldItems = new HashSet<SoldItem>();
 		}
-		return soldItems;
+		return this.soldItems;
     }
 
     public void setSoldItems(Set<SoldItem> soldItems) {

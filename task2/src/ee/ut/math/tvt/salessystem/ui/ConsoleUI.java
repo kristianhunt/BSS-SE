@@ -127,9 +127,8 @@ public class ConsoleUI {
 
         } else if (c[0].equals("s")) {
             selectClient();
-			// dzh 2013-11-25 from condition: Sale sale = new Sale(client);
-			Sale sale = new Sale(selectedClient);
-			this.model.getCurrentPurchaseTableModel().setSale(sale);
+			// dzh 2013-11-25 from condition: Sale sale = new Sale(client);			
+			this.model.getCurrentPurchaseTableModel().setSale(new Sale(selectedClient));
 
         } else if (c[0].equals("p")) {
             if(selectedClient == null) {

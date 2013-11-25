@@ -66,4 +66,7 @@ public class ClientTab {
         return gc;
     }    
     
+	public void refresh() {
+		this.model.refreshClients();
+	}
 }

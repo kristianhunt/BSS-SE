@@ -25,12 +25,14 @@ public class SalesSystemModel {
 
     private Client selectedClient;
 
+    private SalesDomainController domainController; // dzh 2013-11-25 need for refresh
+    
     /**
      * Construct application model.
      * @param domainController Sales domain controller.
      */
     public SalesSystemModel(SalesDomainController domainController) {
-
+		this.domainController = domainController; // dzh 2013-11-25
         warehouseTableModel = new StockTableModel();
         currentPurchaseTableModel = new PurchaseInfoTableModel(this);
         purchaseHistoryTableModel = new PurchaseHistoryTableModel();
@@ -38,16 +40,27 @@ public class SalesSystemModel {
 
         // Load data from the database
 
-        List<StockItem> stockItems = domainController.getAllStockItems();
-        warehouseTableModel.populateWithData(stockItems);
+		refreshStock(); // dzh 2013-11-25 code to function
 
-        List<Client> clients = domainController.getAllClients();
-        clientTableModel.populateWithData(clients);
+		refreshClients(); // dzh 2013-11-25 code to function
 
-        List<Sale> sales = domainController.getAllSales();
-        purchaseHistoryTableModel.populateWithData(sales);
-
+		refreshSales(); // dzh 2013-11-25 code to function
     }
+
+	public void refreshStock() {
+		List<StockItem> stockItems = domainController.getAllStockItems();
+		warehouseTableModel.populateWithData(stockItems);
+	}
+
+	public void refreshClients() {
+		List<Client> clients = domainController.getAllClients();
+		clientTableModel.populateWithData(clients);
+	}
+
+	public void refreshSales() {
+		List<Sale> sales = domainController.getAllSales();
+		purchaseHistoryTableModel.populateWithData(sales);
+	}
 
     public StockTableModel getWarehouseTableModel() {
         return warehouseTableModel;
