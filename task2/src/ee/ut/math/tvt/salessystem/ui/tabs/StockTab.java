@@ -58,7 +58,7 @@ public class StockTab {
         gc.weighty = 1.0;
         gc.fill = GridBagConstraints.BOTH;
         panel.add(drawStockMainPane(), gc);
-
+		
         return panel;
     }
 

@@ -35,7 +35,7 @@ public class ClientTab {
         
         panel.setLayout(gb);
         panel.add(drawClientsTable(), gc);
-
+		
         return panel;
     }
 
