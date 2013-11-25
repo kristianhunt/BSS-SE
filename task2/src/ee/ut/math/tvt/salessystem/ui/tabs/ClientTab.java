@@ -3,6 +3,8 @@ package ee.ut.math.tvt.salessystem.ui.tabs;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -35,12 +37,15 @@ public class ClientTab {
         
         panel.setLayout(gb);
         panel.add(drawClientsTable(), gc);
-		
+
+		// dzh 2013-11-25 refresh data on focus
+		panel.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e) {
+				refresh();
+			}
+		});
         return panel;
     }
-
-    
-
     
     private Component drawClientsTable() {
 

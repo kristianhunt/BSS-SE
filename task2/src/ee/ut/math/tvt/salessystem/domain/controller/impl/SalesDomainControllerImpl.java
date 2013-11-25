@@ -49,7 +49,7 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 
 
     @SuppressWarnings("unchecked")
-    public List<Client> getAllClients() {
+	public List<Client> getAllClients() {		
         List<Client> clients =
             session.createQuery("from Client").list();
 
@@ -58,7 +58,7 @@ public class SalesDomainControllerImpl implements SalesDomainController {
         return clients;
     }
 
-    public Client getClient(long id) {
+	public Client getClient(long id) {
         return (Client) session.get(Client.class, id);
     }
 

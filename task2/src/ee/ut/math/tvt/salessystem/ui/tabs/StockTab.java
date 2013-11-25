@@ -6,6 +6,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -59,6 +61,12 @@ public class StockTab {
         gc.fill = GridBagConstraints.BOTH;
         panel.add(drawStockMainPane(), gc);
 		
+		// dzh 2013-11-25 refresh data on focus
+		panel.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e) {
+				refresh();
+			}
+		});
         return panel;
     }
 
