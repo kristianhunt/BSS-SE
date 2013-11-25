@@ -26,6 +26,7 @@ import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 public class StockTab {
 
     private static final Logger log = Logger.getLogger(StockTab.class);
+
     private final SalesDomainController controller;
 
     private SalesSystemModel model;
@@ -57,6 +58,7 @@ public class StockTab {
         gc.weighty = 1.0;
         gc.fill = GridBagConstraints.BOTH;
         panel.add(drawStockMainPane(), gc);
+
         return panel;
     }
 
@@ -191,5 +193,10 @@ public class StockTab {
             );
         }
     }
+
+	public void refresh() {
+		log.info("Stock tab refresh");
+		this.model.refreshStock();
+	}
 
 }

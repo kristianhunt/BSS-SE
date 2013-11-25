@@ -9,11 +9,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.apache.log4j.Logger;
+
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 
 
 public class ClientTab {
-    
+
+	private static final Logger log = Logger.getLogger(ClientTab.class);
+
     private SalesSystemModel model;
     
     public ClientTab(SalesSystemModel model) {
@@ -50,8 +54,7 @@ public class ClientTab {
         panel.setLayout(new GridBagLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Clients"));
         
-        panel.add(scrollPane, getGbConstraints());
-        
+		panel.add(scrollPane, getGbConstraints());
         return panel;
     }
 
@@ -67,6 +70,7 @@ public class ClientTab {
     }    
     
 	public void refresh() {
+		log.info("Client tab refresh");
 		this.model.refreshClients();
 	}
 }

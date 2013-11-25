@@ -12,6 +12,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.apache.log4j.Logger;
+
 import ee.ut.math.tvt.salessystem.domain.data.Sale;
 import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
@@ -22,6 +24,8 @@ import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
  * labelled "History" in the menu).
  */
 public class HistoryTab {
+
+	private static final Logger log = Logger.getLogger(HistoryTab.class);
 
     private SalesSystemModel model;
 
@@ -114,6 +118,11 @@ public class HistoryTab {
         gc.weighty = 1.0;
         return gc;
     }
+
+	public void refresh() {
+		log.info("History tab refresh");
+		this.model.refreshHistory();
+	}
 
 }
 

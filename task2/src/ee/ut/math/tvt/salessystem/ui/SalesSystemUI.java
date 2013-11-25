@@ -4,11 +4,14 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.Method;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
 
@@ -91,6 +94,31 @@ public class SalesSystemUI extends JFrame {
     tabbedPane.add("History", historyTab.draw());
     tabbedPane.add("Clients", clientTab.draw());
 
+    tabbedPane.addChangeListener(new ChangeListener() {
+        public void stateChanged(ChangeEvent e) {
+        	
+        	if (e.getSource() instanceof JTabbedPane) {
+					JTabbedPane tabPages = (JTabbedPane) e.getSource();
+/*
+					try {
+						Method m = null;
+						m = tabPages.getSelectedComponent().getClass().getMethod("refresh");
+					} catch (NoSuchMethodException e1) {
+						log.info("NoSuchMethodException - refresh");
+						e1.printStackTrace();
+					} catch (SecurityException e1) {
+						log.info("SecurityException - refresh");
+						e1.printStackTrace();
+					}
+*/				
+                log.info("Tab: " + tabPages.getSelectedComponent().getClass().getName());
+              //System.out.println("Tab: change active");
+        	}
+        }
+    });
+
+    
+    
     getContentPane().add(tabbedPane);
   }
 

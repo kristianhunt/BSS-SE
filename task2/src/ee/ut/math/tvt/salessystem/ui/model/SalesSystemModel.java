@@ -44,7 +44,7 @@ public class SalesSystemModel {
 
 		refreshClients(); // dzh 2013-11-25 code to function
 
-		refreshSales(); // dzh 2013-11-25 code to function
+		refreshHistory(); // dzh 2013-11-25 code to function
     }
 
 	public void refreshStock() {
@@ -57,7 +57,7 @@ public class SalesSystemModel {
 		clientTableModel.populateWithData(clients);
 	}
 
-	public void refreshSales() {
+	public void refreshHistory() {
 		List<Sale> sales = domainController.getAllSales();
 		purchaseHistoryTableModel.populateWithData(sales);
 	}
