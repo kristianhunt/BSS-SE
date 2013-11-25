@@ -1,20 +1,20 @@
 package ee.ut.math.tvt.BSS;
  
 import static org.junit.Assert.assertEquals;
- 
+
 import org.junit.Before;
 import org.junit.Test;
- 
+
+import ee.ut.math.tvt.salessystem.domain.data.OrderHeader;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
-import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
  
 public class SaleTest {
  
-        PurchaseInfoTableModel model1 = new PurchaseInfoTableModel();
-        PurchaseInfoTableModel model2 = new PurchaseInfoTableModel();
-        PurchaseInfoTableModel model3 = new PurchaseInfoTableModel();
-        PurchaseInfoTableModel model4 = new PurchaseInfoTableModel();
+	OrderHeader order1 = new OrderHeader();
+	OrderHeader order2 = new OrderHeader();
+	OrderHeader order3 = new OrderHeader();
+	OrderHeader order4 = new OrderHeader();
        
         SoldItem i1 = new SoldItem(new StockItem((long) 1, "testItem1", "desc1", 3.25), 2);
         SoldItem i2 = new SoldItem(new StockItem((long) 2, "testItem2", "desc2", 5.5), 3);
@@ -24,16 +24,16 @@ public class SaleTest {
        
         @Before
         public void setUp() {
-                model1.addItem(i1);
-                model1.addItem(i2);
-                model1.addItem(i3);
+		order1.AddItem(i1);
+		order1.AddItem(i2);
+		order1.AddItem(i3);
                
-                model3.addItem(i1);
+		order3.AddItem(i1);
  
-                model4.addItem(i1);
-                model4.addItem(i2);
-                model4.addItem(i3);
-                model4.addItem(i4);
+		order4.AddItem(i1);
+		order4.AddItem(i2);
+		order4.AddItem(i3);
+		order4.AddItem(i4);
  
         }
        
@@ -43,15 +43,15 @@ public class SaleTest {
         public void testAddSoldItem(){
  
                 double sum = i4.getSum();
-                double totalsum = model1.getTotalAmount();
-                model1.addItem(i4);
-                assertEquals(model1.getTotalAmount(), totalsum + sum, 0.0001);
+		double totalsum = order1.getSum();
+		order1.AddItem(i4);
+		assertEquals(order1.getSum(), totalsum + sum, 0.0001);
         }
        
         @Test
         public void testGetSumWithNoItems(){
  
-                double sum = model2.getTotalAmount();
+		double sum = order2.getSum();
                 assertEquals(sum, 0, 0.0001);
                
         }
@@ -59,7 +59,7 @@ public class SaleTest {
         @Test
         public void testGetSumWithOneItems(){
                
-                assertEquals(model3.getTotalAmount(), i1.getSum(), 0.0001);
+		assertEquals(order3.getSum(), i1.getSum(), 0.0001);
  
                
         }
@@ -69,7 +69,7 @@ public class SaleTest {
  
                 double sum = i1.getSum() + i2.getSum() + i3.getSum() + i4.getSum();
                
-                assertEquals(sum, model4.getTotalAmount(), 0.0001);
+		assertEquals(sum, order4.getSum(), 0.0001);
         }
        
        
