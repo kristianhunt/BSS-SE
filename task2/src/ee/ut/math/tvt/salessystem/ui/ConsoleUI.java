@@ -1,17 +1,21 @@
 package ee.ut.math.tvt.salessystem.ui;
 
-import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
-import ee.ut.math.tvt.salessystem.domain.data.Client;
-import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
-import ee.ut.math.tvt.salessystem.domain.data.StockItem;
-import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+
 import org.apache.log4j.Logger;
+
+import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.data.Client;
+import ee.ut.math.tvt.salessystem.domain.data.Sale;
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
+import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 
 /**
  * A simple CLI (limited functionality).
@@ -28,9 +32,11 @@ public class ConsoleUI {
 
     private Client selectedClient;
 
-    public ConsoleUI(SalesDomainController domainController) {
-        this.dc = domainController;
+	private SalesSystemModel model; // dzh 2013-11-25
 
+    public ConsoleUI(SalesDomainController domainController) {
+		this.dc = domainController;
+		this.model = new SalesSystemModel(domainController); // dzh 2013-11-25
         cart = new ArrayList<StockItem>();
         warehouse = new ArrayList<StockItem>();
     }
@@ -121,6 +127,9 @@ public class ConsoleUI {
 
         } else if (c[0].equals("s")) {
             selectClient();
+			// dzh 2013-11-25 from condition: Sale sale = new Sale(client);
+			Sale sale = new Sale(selectedClient);
+			this.model.getCurrentPurchaseTableModel().setSale(sale);
 
         } else if (c[0].equals("p")) {
             if(selectedClient == null) {
@@ -132,7 +141,16 @@ public class ConsoleUI {
                 for(StockItem stockItem : cart) {
                     soldItems.add(new SoldItem(stockItem, stockItem.getQuantity()));
                 }
-                dc.submitCurrentPurchase(soldItems, selectedClient);
+                /*
+                 * dc.submitCurrentPurchase(soldItems, selectedClient);
+                 * 
+                 * dzh 2013-11-25 from condition: Replace the method
+                 * submitCurrentPurchase(List<SoldItem> goods, Client currentClient)
+                 * with the new method: salesDomainController.registerSale(sale);
+                 */
+                
+                dc.registerSale(this.model.getCurrentPurchaseTableModel().getSale());
+
                 cart.clear();
             } catch (VerificationFailedException e) {
                 log.error(e.getMessage());
@@ -140,7 +158,6 @@ public class ConsoleUI {
 
         } else if (c[0].equals("r")) {
 
-            dc.cancelCurrentPurchase();
             cart.clear();
 
         } else if (c[0].equals("a") && c.length == 3) {

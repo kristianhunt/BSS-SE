@@ -1,6 +1,5 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -16,12 +15,12 @@ public abstract class SalesSystemTableModel<T extends DisplayableItem> extends
 
     private static final long serialVersionUID = 1L;
 
-    protected List<T> rows;
+	// protected List<T> rows; // dzh 2013-11-25 from condition: need remove
     protected final String[] headers;
 
     public SalesSystemTableModel(final String[] headers) {
         this.headers = headers;
-        rows = new ArrayList<T>();
+		// rows = new ArrayList<T>();
     }
 
     /**
@@ -43,47 +42,42 @@ public abstract class SalesSystemTableModel<T extends DisplayableItem> extends
     }
 
     public int getRowCount() {
-        return rows.size();
+		return this.getTableRows().size(); // dzh 2013-11-25 rows->this.getTableRows()
     }
 
     public Object getValueAt(final int rowIndex, final int columnIndex) {
-        return getColumnValue(rows.get(rowIndex), columnIndex);
+		return getColumnValue(this.getTableRows().get(rowIndex), columnIndex); // dzh 2013-11-25 rows->this.getTableRows()
     }
 
     // search for item with the specified id
     public T getItemById(final long id) {
-        for (final T item : rows) {
+		for (final T item : this.getTableRows()) { // dzh 2013-11-25 rows->this.getTableRows()
             if (item.getId() == id)
                 return item;
         }
         throw new NoSuchElementException();
     }
 
-    public List<T> getTableRows() {
-        return rows;
-    }
+	public abstract List<T> getTableRows();
 
-    public void clear() {
-        rows = new ArrayList<T>();
-        fireTableDataChanged();
-    }
+	public abstract void clear();
 
     public void populateWithData(final List<T> data) {
-        rows.clear();
-        rows.addAll(data);
+		this.getTableRows().clear(); // dzh 2013-11-25 rows->this.getTableRows()
+		this.getTableRows().addAll(data); // dzh 2013-11-25 rows->this.getTableRows()
     }
     
     public void addRow(T row) {
-        rows.add(row);
+		this.getTableRows().add(row); // dzh 2013-11-25 rows->this.getTableRows()
         fireTableDataChanged();
     }
     
     public T getRow(int index) {
-        return rows.get(index);
+		return this.getTableRows().get(index); // dzh 2013-11-25 rows->this.getTableRows()
     }
     
-    public List<T> getRows() {
-        return rows;
+	public List<T> getRows() {// dzh 2013-11-25 leave as alias, may be need
+		return this.getTableRows(); // dzh 2013-11-25 rows->this.getTableRows()
     }
     
 }

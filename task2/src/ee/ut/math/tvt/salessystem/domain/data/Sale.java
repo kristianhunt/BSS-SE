@@ -2,8 +2,8 @@ package ee.ut.math.tvt.salessystem.domain.data;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,12 +36,18 @@ public class Sale implements DisplayableItem {
     /** Empty constructors are used by hibernate */
     public Sale() {
     }
-
+   
+    public Sale(Client client) { // dzh 2013-11-25  from condition: Sale sale = new Sale(client);  
+		this.client = client;
+    }
+    
+    /*
     public Sale(List<SoldItem> goods) {
         this.soldItems = new HashSet<SoldItem>(goods);
         this.sellingTime = new Date();
     }
-
+    */    
+    
     public Client getClient() {
         return client;
     }
@@ -59,7 +65,10 @@ public class Sale implements DisplayableItem {
     }
 
     public Set<SoldItem> getSoldItems() {
-        return soldItems;
+		if (soldItems == null) { // dzh 2013-11-25 just in case
+			soldItems = new HashSet<SoldItem>();
+		}
+		return soldItems;
     }
 
     public void setSoldItems(Set<SoldItem> soldItems) {
@@ -75,10 +84,17 @@ public class Sale implements DisplayableItem {
     }
 
     public void addSoldItem(SoldItem item) {
-        item.setSale(this);
-        soldItems.add(item);
+		// item.setSale(this); // will be set in function registerSale
+		this.getSoldItems().add(item);
     }
 
+    /* is need addItem as StockItem???
+	public void addItem(StockItem stockItem) {
+		// !item.setSale(this);
+		// !this.getSoldItems().add(item);
+    }
+    */
+    
     public double getSum() {
         double sum = 0.0;
         for (SoldItem item : soldItems) {
