@@ -223,8 +223,6 @@ public class PurchaseTab {
 			orderHeader.setId(this.model.getHistoryTableModel().genId());
 			orderHeader.setDate(dt);
 			orderHeader.setTime(t);
-			orderHeader.setSum(this.model.getCurrentPurchaseTableModel().getTotalAmount());
-						
 			
 			List <SoldItem>  myList = this.model.getCurrentPurchaseTableModel().getTableRows();
 			Set<SoldItem> myList2 = new HashSet<SoldItem>(myList);

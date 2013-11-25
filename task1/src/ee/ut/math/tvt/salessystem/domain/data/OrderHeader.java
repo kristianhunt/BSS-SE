@@ -4,6 +4,7 @@ package ee.ut.math.tvt.salessystem.domain.data;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -35,11 +36,20 @@ public class OrderHeader implements Cloneable, DisplayableItem {
 	private Set<SoldItem> solditems;
 
 	public Set<SoldItem> getOrderDetail() {
-		return solditems;
+		if (this.solditems == null) {
+			this.solditems = new HashSet<SoldItem>();
+		}
+		return this.solditems;
 	}
 
 	public void setOrderDetail(Set<SoldItem> solditems) {
 		this.solditems = solditems;
+		this.setSum();
+	}
+
+	public void AddItem(SoldItem soldItem) {
+		this.getOrderDetail().add(soldItem);
+		this.setSum();
 	}
 
 	public OrderHeader(Long id, Date date, Time time, double sum,
@@ -49,6 +59,7 @@ public class OrderHeader implements Cloneable, DisplayableItem {
         this.time = time;
         this.sum = sum;
 		this.solditems = solditems;
+		this.setSum();
     }
     
     /**
@@ -82,11 +93,15 @@ public class OrderHeader implements Cloneable, DisplayableItem {
     }
 
     public double getSum() {
-        return sum;
+		double result = 0;
+		for (SoldItem item : this.getOrderDetail()) {
+			result += item.getSum();
+		}
+		return result;
     }
 
-    public void setSum(double sum) {
-        this.sum = sum;
+	private void setSum() {
+		this.sum = this.getSum();
     }
 
     
