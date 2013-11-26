@@ -1,6 +1,6 @@
 package ee.ut.math.tvt.BSS;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,22 +11,29 @@ import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 public class SoldItemTest {
 	private StockItem item1;
 	
+	private Long item_id = new Long(10);
+	private String item_name = "testItem";
+	private String item_desc = "testDescription";
+	private double item_price = 12.0;
+	private int item_quantity = 5;
+		
+	
 	@Before
-	public void setUp() {
-		long id = 10;
-		item1 = new StockItem(id, "testItem", "testDescription", 12.0, 5);
-
+	public void setUp() {		
+		item1 = new StockItem(item_id, item_name, item_desc, item_price, item_quantity);
 	}
 	
 	@Test
 	public void testGetSum() {
-		SoldItem item2 = new SoldItem (item1, 3);
-		assertEquals(item2.getSum(),36.0, 0.001);
+		int quantity = 3;
+		SoldItem item2 = new SoldItem (item1, quantity);
+		assertEquals(item2.getSum(), item_price * quantity, 0.001);
 	}
 
 	@Test
 	public void testGetSumWithZeroQuantity() {
-		SoldItem item3 = new SoldItem (item1, 0);
-		assertEquals(item3.getSum(), 0, 0.001);
+		int quantity = 0;
+		SoldItem item3 = new SoldItem(item1, quantity);
+		assertEquals(item3.getSum(), item_price * quantity, 0.001);
 	}
 }
