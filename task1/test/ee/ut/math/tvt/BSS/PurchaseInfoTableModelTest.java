@@ -57,5 +57,19 @@ public class PurchaseInfoTableModelTest {
 		model.getItemById((long) 20);
 	}
 
+	@Test
+	public void testTotalAmount() {
+		model.addItem(item);
+		assertEquals(model.getTotalAmount(), item.getSum(), 0.0001);
+	}
+
+	@Test
+	public void testPurcaseWithZeroAmount() {
+		model.addItem(item);
+		SoldItem item2 = new SoldItem(new StockItem(item_id+2, item_name+"2", item_desc+"2",
+				item_price, item_quantity), -sold_quantity);
+		model.addItem(item2);
+		assertEquals(model.getTotalAmount(), 0, 0.0001);
+	}
 
 }
