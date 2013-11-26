@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.BSS.comboBoxItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 
 /**
  * Stock item table model.
@@ -83,15 +84,18 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 		return modelComboBox;
 	}
 
-	public void addQuantity(Long id,  int quantity) {
+	public void addQuantity(Long id,  int quantity) throws VerificationFailedException {
 		try {
 			StockItem item = getItemById(id);
+			if (item.getQuantity() + quantity < 0) {
+				throw new VerificationFailedException("The total quantity can not be less than zero");
+			}
 			item.setQuantity(item.getQuantity() + quantity);
 			log.debug("Found existing item " + item.getName()
 					+ " increased quantity by " + quantity);
 		}
 		catch (NoSuchElementException e) {			
-			log.debug("Not found item with barcode: " + id.toString());
+			log.error("Not found item with barcode: " + id.toString());
 		}
 		fireTableDataChanged();
 	}

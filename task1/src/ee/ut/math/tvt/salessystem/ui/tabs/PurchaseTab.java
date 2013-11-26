@@ -245,7 +245,10 @@ public class PurchaseTab {
 			}
 			session.getTransaction().commit();
 			result = true;
-		} 
+		} catch (VerificationFailedException E) {
+			log.error(E.getMessage());
+			session.getTransaction().rollback();
+		}
 		catch (Exception E) {
 			log.error(E.getMessage());
 			session.getTransaction().rollback();

@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
 
 public class StockTableModelTest {
@@ -38,18 +39,14 @@ public class StockTableModelTest {
 		assertEquals(new_quantity_in_stock, old_quantity_in_stock + add_quantity_in_stock);
 	}
 	
-	@Test
-	public void testHasEnoughInStock() {
-		/*
-		 * (expected = IllegalArgumentException.class) - test not completed
-		 */
-		model1.addQuantity((long) 10, -100);
-
+	@Test(expected = VerificationFailedException.class)
+	public void testHasEnoughInStock() throws VerificationFailedException {
+		model1.addQuantity(item_id, -item_quantity - 1);
 	}
 	
 	@Test
 	public void testGetItemByIdWhenItemExists() {
-		assertEquals(model1.getItemById((long) 10), item1);
+		assertEquals(model1.getItemById(item_id.longValue()), item1);
 	}
 	
 	@Test (expected = java.util.NoSuchElementException.class)
