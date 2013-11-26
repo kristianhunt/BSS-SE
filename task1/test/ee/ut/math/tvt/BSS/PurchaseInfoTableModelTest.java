@@ -30,13 +30,13 @@ public class PurchaseInfoTableModelTest {
 		String return_name = (String) model.getColumnValue(item, 1);
 		assertEquals(return_name, item_name);
 
-		double return_price = ((Number) (Object) model.getColumnValue(item, 2))	.doubleValue();
+		double return_price = ((Number) (Object) model.getColumnValue(item, 2)).doubleValue();
 		assertEquals(return_price, item_price, 0.001);
 
 		Integer return_quantity = ((Integer) model.getColumnValue(item, 3)).intValue();
-		assertEquals(return_quantity.intValue(), item_quantity);
+		assertEquals(return_quantity.intValue(), sold_quantity);
 
-		double return_sum =  ((Number) (Object) model.getColumnValue(item, 4))	.doubleValue();
+		double return_sum =  ((Number) (Object) model.getColumnValue(item, 4)).doubleValue();
 		assertEquals(return_sum, sold_quantity * item_price, 0.0001);
 	}
 
