@@ -40,6 +40,7 @@ public class Client implements DisplayableItem {
         this.firstName = firstName;
     }
 
+	@Override
     public Long getId() {
         return id;
     }

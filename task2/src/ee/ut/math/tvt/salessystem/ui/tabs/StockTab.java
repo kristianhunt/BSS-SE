@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import javax.swing.table.JTableHeader;
 
 import org.apache.log4j.Logger;
@@ -63,6 +64,7 @@ public class StockTab {
 		
 		// dzh 2013-11-25 refresh data on focus
 		panel.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusGained(FocusEvent e) {
 				refresh();
 			}
@@ -84,6 +86,7 @@ public class StockTab {
 
         addItem = new JButton("Add");
         addItem.addActionListener(new ActionListener() {
+			@Override
             public void actionPerformed(ActionEvent e) {
                 addStockItemEventHandler();
             }
@@ -137,8 +140,9 @@ public class StockTab {
             null);
 
         JDialog dialog = op.createDialog(null, "Enter new item ...");
-        dialog.setDefaultCloseOperation(
-                JDialog.DO_NOTHING_ON_CLOSE);
+		dialog.setDefaultCloseOperation(
+		// JDialog.DO_NOTHING_ON_CLOSE // dzh 2013-11-26 clean up?
+		WindowConstants.DO_NOTHING_ON_CLOSE);
         dialog.setVisible(true);
 
         int result = ((Integer)op.getValue()).intValue();

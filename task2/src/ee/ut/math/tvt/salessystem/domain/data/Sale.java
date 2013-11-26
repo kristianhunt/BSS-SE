@@ -75,6 +75,7 @@ public class Sale implements DisplayableItem {
         this.soldItems = soldItems;
     }
 
+	@Override
     public Long getId() {
         return id;
     }
@@ -83,15 +84,13 @@ public class Sale implements DisplayableItem {
         this.id = id;
     }
 
-    public void addSoldItem(SoldItem item) {
+	public void addItem(SoldItem item) {
 		// item.setSale(this); // will be set in function registerSale
 		this.getSoldItems().add(item);
     }
 
     /* is need addItem as StockItem???
 	public void addItem(StockItem stockItem) {
-		// !item.setSale(this);
-		// !this.getSoldItems().add(item);
     }
     */
     

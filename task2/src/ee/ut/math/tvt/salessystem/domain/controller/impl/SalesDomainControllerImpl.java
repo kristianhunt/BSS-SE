@@ -27,7 +27,8 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 
     private Session session = HibernateUtil.currentSession();
 
-    @SuppressWarnings("unchecked")
+    @Override
+	@SuppressWarnings("unchecked")
     public List<StockItem> getAllStockItems() {
         List<StockItem> result =
             session
@@ -39,7 +40,8 @@ public class SalesDomainControllerImpl implements SalesDomainController {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
+    @Override
+	@SuppressWarnings("unchecked")
     public List<Sale> getAllSales() {
         List<Sale> result = session.createQuery("from Sale").list();
         log.info(result.size() + " Sales loaded from disk");
@@ -48,7 +50,8 @@ public class SalesDomainControllerImpl implements SalesDomainController {
     }
 
 
-    @SuppressWarnings("unchecked")
+    @Override
+	@SuppressWarnings("unchecked")
 	public List<Client> getAllClients() {
         List<Client> clients =
             session.createQuery("from Client").list();
@@ -58,6 +61,7 @@ public class SalesDomainControllerImpl implements SalesDomainController {
         return clients;
     }
 
+	@Override
 	public Client getClient(long id) {
         return (Client) session.get(Client.class, id);
     }
@@ -70,7 +74,8 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 
     // public void submitCurrentPurchase(List<SoldItem> soldItems, Client currentClient) {
     // dzh 2013-11-25 submitCurrentPurchase -> registerSale  
-    public void registerSale(Sale sale) throws VerificationFailedException {
+    @Override
+	public void registerSale(Sale sale) throws VerificationFailedException {
         // Begin transaction
         Transaction tx = session.beginTransaction();
 
@@ -101,7 +106,8 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 
     }
 
-    public void createStockItem(StockItem stockItem) {
+    @Override
+	public void createStockItem(StockItem stockItem) {
         // Begin transaction
         Transaction tx = session.beginTransaction();
         session.save(stockItem);
@@ -110,7 +116,8 @@ public class SalesDomainControllerImpl implements SalesDomainController {
         log.info("Added new stockItem : " + stockItem);
     }
 
-    public void setModel(SalesSystemModel model) {
+    @Override
+	public void setModel(SalesSystemModel model) {
         this.model = model;
     }
 

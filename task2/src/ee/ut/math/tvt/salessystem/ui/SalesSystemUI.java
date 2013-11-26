@@ -94,8 +94,8 @@ public class SalesSystemUI extends JFrame {
     tabbedPane.add("Clients", clientTab.draw());
 
     tabbedPane.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(ChangeEvent e) {
-
 				if (e.getSource() instanceof JTabbedPane) {
 					JTabbedPane tabPages = (JTabbedPane) e.getSource();
 					if (!tabPages.getSelectedComponent().hasFocus()) {

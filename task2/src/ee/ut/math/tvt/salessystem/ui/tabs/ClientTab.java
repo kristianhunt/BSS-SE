@@ -40,6 +40,7 @@ public class ClientTab {
 
 		// dzh 2013-11-25 refresh data on focus
 		panel.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusGained(FocusEvent e) {
 				refresh();
 			}
