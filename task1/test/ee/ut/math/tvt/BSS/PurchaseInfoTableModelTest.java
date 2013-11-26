@@ -15,16 +15,16 @@ public class PurchaseInfoTableModelTest {
 			35), 2);
 
 	@Test
-	public void testGetColumn() {
-		long id = (long) model.getColumnValue(i1, 0);
+	public void testGetColumnValue() {
+		long id = ((Long) model.getColumnValue(i1, 0)).longValue();
 		assertEquals(id, 1, 0.0001);
 		String name = (String) model.getColumnValue(i1, 1);
-		assertEquals(name, "testItem");
-		double price = (double) model.getColumnValue(i1, 2);
+		assertEquals(name, "testItem1");
+		double price = ((Double) model.getColumnValue(i1, 2)).doubleValue();
 		assertEquals(price, 3.35, 0.001);
-		int quantity = (int) model.getColumnValue(i1, 3);
+		int quantity = ((Integer) model.getColumnValue(i1, 3)).intValue();
 		assertEquals(quantity, 2);
-		double sum = (double) model.getColumnValue(i1, 4);
+		double sum = ((Double) model.getColumnValue(i1, 4)).doubleValue();
 		assertEquals(sum, 6.70, 0.0001);
 	}
 
