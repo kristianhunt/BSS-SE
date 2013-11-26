@@ -2,6 +2,7 @@ package ee.ut.math.tvt.BSS;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
@@ -10,17 +11,22 @@ import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 
 public class PurchaseInfoTableModelTest {
 
-	PurchaseInfoTableModel model = new PurchaseInfoTableModel();
+	private PurchaseInfoTableModel model = new PurchaseInfoTableModel();
 
-	Long item_id = new Long(1);
-	String item_name = "testItem1";
-	String item_desc = "desc1";
-	double item_price = 3;
-	int item_quantity = 35;
-	int sold_quantity = 2;
+	private SoldItem item;
 
-	SoldItem item = new SoldItem(new StockItem(item_id, item_name, item_desc,
+	private Long item_id = new Long(1);
+	private String item_name = "testItem1";
+	private String item_desc = "desc1";
+	private double item_price = 3;
+	private int item_quantity = 35;
+	private int sold_quantity = 2;
+
+	@Before
+	public void setUp() {
+		item = new SoldItem(new StockItem(item_id, item_name, item_desc,
 			item_price, item_quantity), sold_quantity);
+	}
 
 	@Test
 	public void testGetColumnValue() {
@@ -33,8 +39,8 @@ public class PurchaseInfoTableModelTest {
 		double return_price = ((Number) (Object) model.getColumnValue(item, 2)).doubleValue();
 		assertEquals(return_price, item_price, 0.001);
 
-		Integer return_quantity = ((Integer) model.getColumnValue(item, 3)).intValue();		
-		assertEquals(return_quantity.intValue(), sold_quantity);
+		int return_quantity = ((Integer) model.getColumnValue(item, 3)).intValue();		
+		assertEquals(return_quantity, sold_quantity);
 
 		double return_sum = ((Number) (Object) model.getColumnValue(item, 4)).doubleValue();
 		assertEquals(return_sum, sold_quantity * item_price, 0.0001);
@@ -47,7 +53,7 @@ public class PurchaseInfoTableModelTest {
 	}
 
 	@Test(expected = java.util.NoSuchElementException.class)
-	public void testInBasketNoSuchElementException() {
+	public void testInPurchaseNoSuchElementException() {
 		model.getItemById((long) 20);
 	}
 
