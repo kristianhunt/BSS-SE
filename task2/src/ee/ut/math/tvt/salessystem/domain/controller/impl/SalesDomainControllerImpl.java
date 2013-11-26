@@ -49,12 +49,12 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 
 
     @SuppressWarnings("unchecked")
-	public List<Client> getAllClients() {		
+	public List<Client> getAllClients() {
         List<Client> clients =
             session.createQuery("from Client").list();
 
         log.info(clients.size() + " clients loaded from disk");
-
+		
         return clients;
     }
 

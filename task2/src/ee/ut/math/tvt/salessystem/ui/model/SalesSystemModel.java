@@ -50,16 +50,19 @@ public class SalesSystemModel {
 	public void refreshStock() {
 		List<StockItem> stockItems = domainController.getAllStockItems();
 		warehouseTableModel.populateWithData(stockItems);
+		warehouseTableModel.fireTableDataChanged(); // dzh 2013-11-26 need for update JTabel by reference
 	}
 
 	public void refreshClients() {
 		List<Client> clients = domainController.getAllClients();
 		clientTableModel.populateWithData(clients);
+		clientTableModel.fireTableDataChanged(); // dzh 2013-11-26 need for update JTabel by reference
 	}
 
 	public void refreshHistory() {
 		List<Sale> sales = domainController.getAllSales();
 		purchaseHistoryTableModel.populateWithData(sales);
+		purchaseHistoryTableModel.fireTableDataChanged(); // dzh 2013-11-26 need for update JTabel by reference
 	}
 
     public StockTableModel getWarehouseTableModel() {
